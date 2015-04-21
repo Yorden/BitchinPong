@@ -106,25 +106,25 @@ xcopy "$(SolutionDir)include\ME\Shaders" "$(SolutionDir)_Binary\Shaders" /y</Com
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\BITCHIN%27 PONG\0_TestBed\Ball.h" />
-    <ClInclude Include="..\..\BITCHIN%27 PONG\0_TestBed\CollisionManager.h" />
+    <ClInclude Include="Ball.h" />
     <ClInclude Include="BoundingBox.h" />
-    <ClInclude Include="..\..\BITCHIN%27 PONG\0_TestBed\GameManager.h" />
-    <ClInclude Include="..\..\BITCHIN%27 PONG\0_TestBed\Player.h" />
     <ClInclude Include="..\res\Resource.h" />
+    <ClInclude Include="CollisionManager.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="Main.h" />
+    <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\res\BTO.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\BITCHIN%27 PONG\0_TestBed\Ball.cpp" />
-    <ClCompile Include="..\..\BITCHIN%27 PONG\0_TestBed\CollisionManager.cpp" />
+    <ClCompile Include="Ball.cpp" />
     <ClCompile Include="BoundingBox.cpp" />
-    <ClCompile Include="..\..\BITCHIN%27 PONG\0_TestBed\GameManager.cpp" />
-    <ClCompile Include="..\..\BITCHIN%27 PONG\0_TestBed\Player.cpp" />
+    <ClCompile Include="CollisionManager.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
