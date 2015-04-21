@@ -1,0 +1,31 @@
+*.sdf
+*.opensdf
+*.suo
+*.user
+*.pdb
+Z_DELETE/*
+*.tlog
+*.lastbuildstate
+*.log
+*.swp
+*~
+*.exe
+*.cfg
+ 
+#Following ignores were taken from:
+#http://stackoverflow.com/questions/1287256/git-net-files-to-ignore
+#for precaution
+*.dep
+*.aps
+*.vbw
+*.ncb
+*.pgl
+*.bsc
+*.ilk
+*.exp
+*.sbr
+*.opt
+*.ibd
+*.idb
+*.pch
+*.res
