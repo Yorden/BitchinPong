@@ -23,10 +23,20 @@ matrix4 Ball::GetPosition() {
 
 /* Update */
 void Ball::Update() {
+	isOutOfBoundsX();
 	position *= glm::translate(velocity);
 }
 
 /* SwitchDirection */
 void Ball::SwitchDirection() {
 	velocity *= -1;
+}
+// checks if the ball went passed a player
+void Ball::isOutOfBoundsX(){
+	if(position[3][0] > 8 || position[3][0] < -8)
+	{
+		position[3][0] = 0;
+
+	}
+
 }

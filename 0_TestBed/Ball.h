@@ -33,7 +33,7 @@ public:
 	/* Switches ball direction when it hits a paddle/wall */
 	void SwitchDirection();
 
-	void PastPlayer();
+	void isOutOfBoundsX();
 };
 #endif
 
