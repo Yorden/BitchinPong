@@ -411,8 +411,12 @@ void GameManager::Update () {
 	meshManagerSingleton->Update(); //Update the mesh information
 	meshManagerSingleton->AddInstanceToRenderList("ALL");
 
-	if(collisionManager->BallCollision(*player1, *player2, *ball)) {
-		ball->SwitchDirection();
+	if(collisionManager->BallCollision(*player1, *ball)) {
+		ball->SwitchDirection("Ball", "Player1");
+	}
+
+	if(collisionManager->BallCollision(*player2, *ball)) {
+		ball->SwitchDirection("Ball", "Player2");
 	}
 
 	

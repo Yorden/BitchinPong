@@ -89,15 +89,15 @@ matrix4 CollisionManager::PlayerInBounds(matrix4 p, String name) {
 }
 
 /* BallCollision */
-bool CollisionManager::BallCollision(Player& p1, Player& p2, Ball& b) {
+bool CollisionManager::BallCollision(Player& p1, /*Player& p2,*/ Ball& b) {
 	vector3 p1Pos = static_cast<vector3>(p1.GetPosition() * vector4(GetBox("Player1")->GetCentroid(), 1.0f));
-	vector3 p2Pos = static_cast<vector3>(p2.GetPosition() * vector4(GetBox("Player2")->GetCentroid(), 1.0f));
+	//vector3 p2Pos = static_cast<vector3>(p2.GetPosition() * vector4(GetBox("Player2")->GetCentroid(), 1.0f));
 	vector3 bPos = static_cast<vector3>(b.GetPosition() * vector4(GetBox("Ball")->GetCentroid(), 1.0f));
 
 	vector3 p1Min = p1Pos + GetBox("Player1")->GetMin();
 	vector3 p1Max = p1Pos + GetBox("Player1")->GetMax();
-	vector3 p2Min = p2Pos + GetBox("Player2")->GetMin();
-	vector3 p2Max = p2Pos + GetBox("Player2")->GetMax();
+	//vector3 p2Min = p2Pos + GetBox("Player2")->GetMin();
+	//vector3 p2Max = p2Pos + GetBox("Player2")->GetMax();
 	vector3 bMin = bPos + GetBox("Ball")->GetMin();
 	vector3 bMax = bPos + GetBox("Ball")->GetMax();
 
@@ -106,12 +106,12 @@ bool CollisionManager::BallCollision(Player& p1, Player& p2, Ball& b) {
 		p1Min.y < bMax.y &&
 		p1Max.y > bMin.y) {
 			return true;
-	} else if(p2Min.x < bMax.x &&
-		p2Max.x > bMin.x &&
-		p2Min.y < bMax.y &&
-		p2Max.y > bMin.y) {
-			return true;
-	}
+	} //else if(p2Min.x < bMax.x &&
+		//p2Max.x > bMin.x &&
+		//p2Min.y < bMax.y &&
+		//p2Max.y > bMin.y) {
+			//return true;
+	//}
 
 	return false;
 }

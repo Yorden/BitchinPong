@@ -2,7 +2,7 @@
 #define BALL
 
 #include "ME\MyEngine.h"
-
+#include "Player.h"
 class Ball
 {
 	String name;
@@ -31,9 +31,11 @@ public:
 
 	/* SwitchDirection */
 	/* Switches ball direction when it hits a paddle/wall */
-	void SwitchDirection();
+	void SwitchDirection(String ballName, String collisName);
 
-	void isOutOfBoundsX();
+	void isOutOfBounds();
+
+	vector3 getCenterPoint(String targetMatName);
 };
 #endif
 

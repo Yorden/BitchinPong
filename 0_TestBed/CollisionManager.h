@@ -50,7 +50,7 @@ public:
 
 	/* BallCollision */
 	/* Detects if there is a collision between a players paddle and the ball */
-	bool BallCollision(Player& p1, Player& p2, Ball& b);
+	bool BallCollision(Player& p1, /*Player& p2,*/ Ball& b);
 };
 #endif
 
