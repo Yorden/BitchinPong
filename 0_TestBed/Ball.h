@@ -1,39 +1,36 @@
+/* Project: BITCHIN PONG */
+/* Team Members: Kirk Hewitt, Jordan Karlsruher, John Radkins */
+/* DSA II - 309.02 */
+/* Spring 2015 */
+
 #ifndef BALL
 #define BALL
 
 #include "ME\MyEngine.h"
 #include "Player.h"
-class Ball
+class Ball : public GameObject
 {
-	String name;
-	matrix4 position;
-	vector3 velocity;
-	float acceleration;
 
 public:
 	/* Constructor */
-	Ball();
+	Ball(matrix4 pos, vector3 vel);
 	
 	/* Destructor */
-	~Ball(void);
-
-	/* GetName */
-	/* Returns ball name used for identification */
-	String GetName();
-
-	/* GetPosition */
-	/* Returns ball position in global space */
-	matrix4 GetPosition();
+	~Ball();
 
 	/* Update */
 	/* Updates ball */
 	void Update();
 
+	/* Move */
+	/* Moves ball */
+	void Move() override;
+
 	/* SwitchDirection */
 	/* Switches ball direction when it hits a paddle/wall */
 	void SwitchDirection(String ballName, String collisName);
 
-	void isOutOfBounds();
+	bool InBounds();
 
 	vector3 getCenterPoint(String targetMatName);
 };

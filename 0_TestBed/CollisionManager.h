@@ -6,7 +6,6 @@
 #include "Ball.h"
 #include "BoundingBox.h"
 
-
 class CollisionManager
 {
 	static CollisionManager* instance;

@@ -1,4 +1,11 @@
+/* Project: BITCHIN PONG */
+/* Team Members: Kirk Hewitt, Jordan Karlsruher, John Radkins */
+/* DSA II - 309.02 */
+/* Spring 2015 */
+
 #include "GameManager.h"
+
+/* ProcessKeyboard */
 void GameManager::ProcessKeyboard()
 {
 	float fSpeed = 0.1f;
@@ -13,24 +20,25 @@ void GameManager::ProcessKeyboard()
 	/* Player 1 Positioning */
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
-		player1->IncrementAcceleration(0.05f);
+		player1->MovePlayer(1);
 	}
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
-		player1->IncrementAcceleration(-0.05f);
+		player1->MovePlayer(-1);
 	}
 
 	/* Player 2 Positioning */
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
-		player2->IncrementAcceleration(0.05f);
+		player2->MovePlayer(1);
 	}
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
-		player2->IncrementAcceleration(-0.005f);
+		player2->MovePlayer(-1);
 	}
 }
 
+/* ProcessMouse */
 void GameManager::ProcessMouse(){
 	m_bArcBall = false;
 	m_bFPC = false;
@@ -54,6 +62,8 @@ void GameManager::ProcessMouse(){
 		bLeft_Released = false;
 	}
 }
+
+/* CameraRotation */
 void GameManager::CameraRotation(float a_fSpeed){
 	UINT	MouseX, MouseY;		// Coordinates for the mouse
 	UINT	CenterX, CenterY;	// Coordinates for the center of the screen.
@@ -97,6 +107,8 @@ void GameManager::CameraRotation(float a_fSpeed){
 	}
 	cameraSingleton->Rotate(fAngleX, fAngleY);
 }
+
+/* ArcBall */
 void GameManager::ArcBall(float a_fSensitivity){
 	static matrix4 arcball;
 	UINT	MouseX, MouseY;		// Coordinates for the mouse

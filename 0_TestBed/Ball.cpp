@@ -1,29 +1,27 @@
+/* Project: BITCHIN PONG */
+/* Team Members: Kirk Hewitt, Jordan Karlsruher, John Radkins */
+/* DSA II - 309.02 */
+/* Spring 2015 */
+
 #include "Ball.h"
 
 /* Constructor */
-Ball::Ball(){
-	position = matrix4(IDENTITY);
-	position = glm::scale(position, vector3(0.5f,0.5f,0.5f));
-	velocity = vector3(0.05f, 0.0f, 0.0f);
+Ball::Ball(matrix4 pos, vector3 vel) :
+	GameObject("Ball", pos, vel, 0.05, 0.05) {
 }
 
 /* Destructor */
 Ball::~Ball() {
 }
 
-/* GetName */
-String Ball::GetName() {
-	return name;
-}
-
-/* GetPositon */
-matrix4 Ball::GetPosition() {
-	return position;
-}
-
 /* Update */
 void Ball::Update() {
-	isOutOfBounds();
+	GameObject::Update();
+	InBounds();
+}
+
+/* Move */
+void Ball::Move() {
 	position *= glm::translate(velocity);
 }
 
@@ -41,21 +39,21 @@ void Ball::SwitchDirection(String ballName, String collisName) {
 }
 
 // checks if the ball went passed a player
-void Ball::isOutOfBounds(){
+bool Ball::InBounds(){
 	//X Value: Will move back into center position 
-	if(position[3][0] > 8 || position[3][0] < -8)
-	{
+	if(position[3][0] > 8 || position[3][0] < -8) {
 		position[3][0] = 0;
 		position[3][1] = 0;
-
+		return true;
 	}
 
 	//Y Value: Will bounce by reversing y value of the velocity
-	if(position[3][1] > 4 || position[3][1] < -4)
-	{
+	if(position[3][1] > 4 || position[3][1] < -4) {
 		velocity.y *= -1;
-
+		return true;
 	}
+
+	return false;
 }
 
 //The function to calculate the center point of a specific matrix (used in the switch direction function
