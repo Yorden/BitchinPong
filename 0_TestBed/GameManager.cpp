@@ -23,6 +23,10 @@ GameManager::GameManager() {
 	player1 = new Player("Player1", glm::translate(vector3(-6.0f, 0.0f, 0.0f)));
 	player2 = new Player("Player2", glm::translate(vector3(6.0f, 0.0f, 0.0f)));
 	ball = new Ball(matrix4(IDENTITY), vector3(0.05, 0, 0));
+
+	gameObjects.push_back(player1);
+	gameObjects.push_back(player2);
+	gameObjects.push_back(ball);
 }
 
 /* Copy Constructor */
@@ -114,27 +118,18 @@ void GameManager::Idle () {
 }
 
 void GameManager::Update () {
-	systemSingleton->UpdateTime(); //Update the systemwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwssssssssssssssssssssssssssssssssssssss
+	systemSingleton->UpdateTime(); //Update the system
 
 	player1->Update();
 	player2->Update();
 	ball->Update();
 
-	collisionManager->GenerateBoundingBoxes(player1->GetPosition(), player2->GetPosition(), ball->GetPosition());	
+	
+	//Update the mesh information
+	meshManagerSingleton->Update();
 
-	meshManagerSingleton->SetModelMatrix(player1->GetPosition(), "Player1");
-	meshManagerSingleton->SetModelMatrix(player2->GetPosition(), "Player2");
-	meshManagerSingleton->SetModelMatrix(ball->GetPosition(), "Ball");
-
-	meshManagerSingleton->Update(); //Update the mesh information
-	meshManagerSingleton->AddInstanceToRenderList("ALL");
-
-	if(collisionManager->BallCollision(*player1, *ball)) {
+	if(collisionManager->BallCollision(*player1, *player2, *ball)) {
 		ball->SwitchDirection("Ball", "Player1");
-	}
-
-	if(collisionManager->BallCollision(*player2, *ball)) {
-		ball->SwitchDirection("Ball", "Player2");
 	}
 
 	
@@ -150,6 +145,11 @@ void GameManager::Display (void) {
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // clear the window
 
 	grid->Render(100.0f); //renders the grid with a 100 scale
+
+	player1->Draw();
+	player2->Draw();
+	ball->Draw();
+	collisionManager->RenderBoxes(gameObjects);
 
 	meshManagerSingleton->Render();
 
@@ -221,10 +221,13 @@ void GameManager::Init( HINSTANCE hInstance, LPWSTR lpCmdLine, int nCmdShow)
 
 	// Get the singletons
 	cameraSingleton = CameraSingleton::GetInstance();
+	cameraSingleton->SetPosition(vector3(0, 0.0f, 10.0f));
+	
+	meshManagerSingleton = MeshManagerSingleton::GetInstance();
 
 	// Initialize the App Variables
 	InitInternalAppVariables();
-	InitPlayers();
+	InitGameObjects();
 
 	//Color of the window
 	if(systemSingleton->m_RenderingContext == OPENGL3X)
@@ -236,12 +239,11 @@ void GameManager::Init( HINSTANCE hInstance, LPWSTR lpCmdLine, int nCmdShow)
 	printf("\n");
 }
 
-void GameManager::InitPlayers() {
-	meshManagerSingleton = MeshManagerSingleton::GetInstance();
-	meshManagerSingleton->LoadModel("Minecraft\\MC_Creeper.obj", "Player1", player1->GetPosition());
-	meshManagerSingleton->LoadModel("Minecraft\\MC_Creeper.obj", "Player2", player2->GetPosition());
-	meshManagerSingleton->LoadModel("Minecraft\\CubePrimitive.obj", "Ball", ball->GetPosition());
-	cameraSingleton->SetPosition(vector3(0.0f,0.0f,10.0f));
+void GameManager::InitGameObjects() {
+	player1->Init();
+	player2->Init();
+	ball->Init();
+	meshManagerSingleton->Update();
 }
 
 void GameManager::InitInternalAppVariables() {

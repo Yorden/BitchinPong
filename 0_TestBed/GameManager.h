@@ -22,6 +22,7 @@ class GameManager
 	vector4 windowColor;
 
 	// Game variables
+	std::vector<GameObject*> gameObjects;
 	Player* player1;
 	Player* player2;
 	Ball* ball;
@@ -76,9 +77,9 @@ private:
 	/* Initialize MyEngine variables */
 	void InitMyEngine();
 
-	/* InitPlayers */
-	/* Initializes players */
-	void InitPlayers();
+	/* InitGameObjects */
+	/* Initializes GameObjects */
+	void InitGameObjects();
 
 	/* InitAppVariables */
 	/* Initializes this applications internal variables */

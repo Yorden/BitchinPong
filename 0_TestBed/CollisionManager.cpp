@@ -4,7 +4,6 @@ CollisionManager* CollisionManager::instance = nullptr;
 
 /* Constructor */
 CollisionManager::CollisionManager(){
-	boundingBoxes = std::vector<BoundingBox*>();
 }
 
 /* Destructor */
@@ -22,96 +21,56 @@ CollisionManager* CollisionManager::GetInstance() {
 	return instance;
 }
 
-/* GenerateBoundingBox */
-void CollisionManager::GenerateBoundingBox(String name) {
-	if(GetBox(name) != nullptr) {
-		GetBox(name)->GenerateBoundingBox();
-	}
-	else {
-		BoundingBox* b = new BoundingBox(name);
-		boundingBoxes.push_back(b);
-	}
-}
-
-/* GenerateBoundingBoxes */
-void CollisionManager::GenerateBoundingBoxes(matrix4 p1, matrix4 p2, matrix4 b) {
-	GenerateBoundingBox("Player1");
-	GenerateBoundingBox("Player2");
-	GenerateBoundingBox("Ball");
-	RenderBoxes(p1, p2, b);
+/* Update */
+void CollisionManager::Update() {
+	
 }
 
 /* RenderBoxes */
-void CollisionManager::RenderBoxes(matrix4 p1, matrix4 p2, matrix4 b) {
-	GetBox("Player1")->AddToRenderList(p1);
-	GetBox("Player2")->AddToRenderList(p2);
-	GetBox("Ball")->AddToRenderList(b);
-}
+void CollisionManager::RenderBoxes(std::vector<GameObject*> gameObjects) {
+	for(int i = 0; i < gameObjects.size(); i++) {
+		GameObject* g = gameObjects[i];
 
-/* GetBox */
-BoundingBox* CollisionManager::GetBox(String name) {
-	int rectNum = IdentifyBox(name);
-
-	if(rectNum != -1) 
-		return boundingBoxes[rectNum];
-	
-	return nullptr;
-}
-
-/* IdentifyRectangle */
-int CollisionManager::IdentifyBox(String n) {
-	for(unsigned int i = 0; i < boundingBoxes.size(); i++) {
-		if(boundingBoxes[i]->GetName() == n) 
-			return i;
+		g->boundingBox->AddToRenderList();
 	}
-
-	return -1;
-}
-
-/* PlayerInBounds */
-matrix4 CollisionManager::PlayerInBounds(matrix4 p, String name) {
-	matrix4 pPos = p;
-	vector3 pScale(0.0f, 0.0f, 0.0f);
-
-	if(IdentifyBox(name) != -1) {
-		pPos *= glm::translate(GetBox(name)->GetCentroid());
-		pScale = GetBox(name)->GetScale();
-	}
-
-	if(pPos[3].y + pScale.y/2.0f < -2.1) {
-		p[3].y = -2 - pScale.y;
-	}
-	else if(pPos[3].y - pScale.y/2.0f > 2) {
-		p[3].y = 2;
-	}
-
-	return p;
 }
 
 /* BallCollision */
-bool CollisionManager::BallCollision(Player& p1, /*Player& p2,*/ Ball& b) {
-	vector3 p1Pos = static_cast<vector3>(p1.GetPosition() * vector4(GetBox("Player1")->GetCentroid(), 1.0f));
-	//vector3 p2Pos = static_cast<vector3>(p2.GetPosition() * vector4(GetBox("Player2")->GetCentroid(), 1.0f));
-	vector3 bPos = static_cast<vector3>(b.GetPosition() * vector4(GetBox("Ball")->GetCentroid(), 1.0f));
+bool CollisionManager::BallCollision(GameObject& player1, GameObject& player2, GameObject& ball) {
+	BoundingBox* p1 = player1.boundingBox;
+	BoundingBox* p2 = player2.boundingBox;
+	BoundingBox* b = ball.boundingBox;
 
-	vector3 p1Min = p1Pos + GetBox("Player1")->GetMin();
-	vector3 p1Max = p1Pos + GetBox("Player1")->GetMax();
-	//vector3 p2Min = p2Pos + GetBox("Player2")->GetMin();
-	//vector3 p2Max = p2Pos + GetBox("Player2")->GetMax();
-	vector3 bMin = bPos + GetBox("Ball")->GetMin();
-	vector3 bMax = bPos + GetBox("Ball")->GetMax();
+	float p1Left = vector3(player1.GetPosition() * vector4(p1->GetCentroid(), 1.0f)).x - p1->GetScale().x/2.0f;
+	float p1Right = vector3(player1.GetPosition() * vector4(p1->GetCentroid(), 1.0f)).x + p1->GetScale().x/2.0f;
+	float p1Top = vector3(player1.GetPosition() * vector4(p1->GetCentroid(), 1.0f)).y + p1->GetScale().y/2.0f;
+	float p1Bottom = vector3(player1.GetPosition() * vector4(p1->GetCentroid(), 1.0f)).y - p1->GetScale().y/2.0f;
 
-	if(p1Min.x < bMax.x &&
-		p1Max.x > bMin.x &&
-		p1Min.y < bMax.y &&
-		p1Max.y > bMin.y) {
+	float p2Left = vector3(player2.GetPosition() * vector4(p2->GetCentroid(), 1.0f)).x - p2->GetScale().x/2.0f;
+	float p2Right = vector3(player2.GetPosition() * vector4(p2->GetCentroid(), 1.0f)).x + p2->GetScale().x/2.0f;
+	float p2Top = vector3(player2.GetPosition() * vector4(p2->GetCentroid(), 1.0f)).y + p2->GetScale().y/2.0f;
+	float p2Bottom = vector3(player2.GetPosition() * vector4(p2->GetCentroid(), 1.0f)).y - p2->GetScale().y/2.0f;
+
+	float bLeft = vector3(ball.GetPosition() * vector4(b->GetCentroid(), 1.0f)).x - b->GetScale().x/2.0f;
+	float bRight = vector3(ball.GetPosition() * vector4(b->GetCentroid(), 1.0f)).x + b->GetScale().x/2.0f;
+	float bTop = vector3(ball.GetPosition() * vector4(b->GetCentroid(), 1.0f)).y + b->GetScale().y/2.0f;
+	float bBottom = vector3(ball.GetPosition() * vector4(b->GetCentroid(), 1.0f)).y - b->GetScale().y/2.0f;
+
+	/* Player1 Check */
+	if (bLeft < p1Right &&
+		bRight > p1Left &&
+		bBottom < p1Top &&
+		bTop > p1Bottom) {
 			return true;
-	} //else if(p2Min.x < bMax.x &&
-		//p2Max.x > bMin.x &&
-		//p2Min.y < bMax.y &&
-		//p2Max.y > bMin.y) {
-			//return true;
-	//}
+	}
+
+	/* Player2 Check */
+	if (bLeft < p2Right &&
+		bRight > p2Left &&
+		bBottom < p2Top &&
+		bTop > p2Bottom) {
+			return true;
+	}
 
 	return false;
 }

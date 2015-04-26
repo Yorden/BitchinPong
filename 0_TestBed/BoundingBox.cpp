@@ -6,14 +6,13 @@
 #include "BoundingBox.h"
 
 /* Constructor */
-BoundingBox::BoundingBox(String n) {
+BoundingBox::BoundingBox(String n, matrix4 pos) {
 	name = n;
 	scale = vector3(0.0f);
+	position = pos;
 	centroid = vector3(0.0f);
 	minVertices = vector3(0.0f);
 	maxVertices = vector3(0.0f);
-
-	GenerateBoundingBox();
 }
 
 /* Destructor */
@@ -45,11 +44,16 @@ vector3 BoundingBox::GetMax() {
 	return maxVertices;
 }
 
+/* SetPosition */
+void BoundingBox::SetPosition(matrix4 pos) {
+	position = pos;
+}
+
 /* GenerateBoundingBox */
 void BoundingBox::GenerateBoundingBox() {
-	MeshManagerSingleton* meshManager = MeshManagerSingleton::GetInstance();
+	MeshManagerSingleton* mesh = MeshManagerSingleton::GetInstance();
 
-	std::vector<vector3> vertices = meshManager->GetVertices(name);
+	std::vector<vector3> vertices = mesh->GetVertices(name);
 
 	for(int i = 0; i < vertices.size(); i++) {
 		vector2 vertex = vector2(vertices[i].x, vertices[i].y);
@@ -72,7 +76,7 @@ void BoundingBox::GenerateBoundingBox() {
 }
 
 /* AddToRenderList */
-void BoundingBox::AddToRenderList(matrix4 pos) {
+void BoundingBox::AddToRenderList() {
 	MeshManagerSingleton* meshManager = MeshManagerSingleton::GetInstance();
-	meshManager->AddCubeToQueue(pos * glm::translate(centroid) * glm::scale(scale), MEBLUE, MERENDER::WIRE);
+	meshManager->AddCubeToQueue(position * glm::translate(centroid) * glm::scale(scale), MEBLUE, MERENDER::WIRE);
 }

@@ -7,6 +7,7 @@
 #define GAMEOBJECT
 
 #include "ME\MyEngine.h"
+#include "BoundingBox.h"
 
 class GameObject
 {
@@ -17,6 +18,8 @@ public:
 	vector3 velocity; // Current velocity
 	float acceleration; // Current acceleration
 	float maxSpeed; // Maximum speed
+	BoundingBox* boundingBox; // BoundingBox pointer
+	MeshManagerSingleton* meshManager; // MeshManager singleton
 
 	/* Constructor */
 	GameObject(String n, matrix4 pos, vector3 vel, float maxSp, float accel);
@@ -44,9 +47,17 @@ public:
 	/* Returns current acceleration of the GameObject */
 	float GetAcceleration();
 
+	/* Init */
+	/* Initializes GameObject */
+	virtual void Init();
+
 	/* Update */
 	/* Updates GameObject */
 	virtual void Update();
+
+	/* Draw */
+	/* Draw GameObject */
+	virtual void Draw();
 
 	/* Move */
 	/* Moves GameObject in specified direction */

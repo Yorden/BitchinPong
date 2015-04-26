@@ -12,13 +12,14 @@ class BoundingBox
 {
 	String name; // Name used to relate to instance in mesh manager
 	vector3 scale; // Size of rectangle
+	matrix4 position; // Box position
 	vector3 centroid; // Centroid of rectangle
 	vector3 minVertices; // Min xy-values of rectangle
 	vector3 maxVertices; // Max xy-values of rectangle
 
 public:
 	/* Constructor */
-	BoundingBox(String n);
+	BoundingBox(String n, matrix4 pos);
 
 	/* Destructor */
 	~BoundingBox();
@@ -43,12 +44,16 @@ public:
 	/* Returns max xy-values of box */
 	vector3 GetMax();
 
+	/* SetPosition */
+	/* Sets position of box in global space */
+	void SetPosition(matrix4 pos);
+
 	/* GenerateBoundingBox */
 	/* Creates collision rectangle around specified model */
 	void GenerateBoundingBox();
 
 	/* AddToRenderList */
 	/* Creates visual representation of collision rectangle surrounding model */
-	void AddToRenderList(matrix4 pos);
+	void AddToRenderList();
 };
 #endif

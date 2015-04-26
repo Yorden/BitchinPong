@@ -14,10 +14,22 @@ Ball::Ball(matrix4 pos, vector3 vel) :
 Ball::~Ball() {
 }
 
+/* Init */
+void Ball::Init() {
+	GameObject::Init();
+	meshManager->LoadModelUnthreaded("Minecraft\\CubePrimitive.obj", name, position);
+	boundingBox->GenerateBoundingBox();
+}
+
 /* Update */
 void Ball::Update() {
 	GameObject::Update();
 	InBounds();
+}
+
+/* Draw */
+void Ball::Draw() {
+	GameObject::Draw();
 }
 
 /* Move */
@@ -31,11 +43,11 @@ void Ball::SwitchDirection(String ballName, String collisName) {
 	velocity.x *= -1;
 
 	//Calculating the center points for both the ball and collision target
-	vector3 ballCenter = getCenterPoint(ballName);
-	vector3 collisCenter = getCenterPoint(collisName);
+	//vector3 ballCenter = getCenterPoint(ballName);
+	//vector3 collisCenter = getCenterPoint(collisName);
 
 	//Setting the y value of the velocity to the difference between the collision's center point and the ball's center point
-	velocity.y = (collisCenter.y - ballCenter.y)/15.0f;
+	//velocity.y = (collisCenter.y - ballCenter.y)/15.0f;
 }
 
 // checks if the ball went passed a player
