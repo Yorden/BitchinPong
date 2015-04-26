@@ -33,4 +33,6 @@ void Player::MovePlayer(int dir) {
 
 /* InBounds */
 bool Player::InBounds() {
+
+	return true;
 }
