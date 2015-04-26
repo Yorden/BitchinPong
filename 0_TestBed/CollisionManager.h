@@ -9,8 +9,6 @@
 class CollisionManager
 {
 	static CollisionManager* instance;
-	std::vector<BoundingBox*> boundingBoxes;
-	std::vector<matrix4> boundingBoxMatrices;
 
 public:
 	/* Constructor */
@@ -23,33 +21,21 @@ public:
 	/* Returns CollisionManager singleton */
 	static CollisionManager* GetInstance();
 
-	/* GenerateBoundingBox */
-	/* Creates bounding box around specified model */
-	void GenerateBoundingBox(String name);
-
-	/* GenerateCollisionBoxes */
-	/* Generates bounding boxes around players */
-	void GenerateBoundingBoxes(matrix4 p1, matrix4 p2, matrix4 b);
+	/* Update */
+	/* Updates CollisionManager */
+	void Update();
 
 	/* RenderBoxes */
 	/* Draws cubes around models representing visualization of bounding box */
-	void RenderBoxes(matrix4 p1, matrix4 p2, matrix4 b);
-
-	/* GetBox */
-	/* Returns rectangle from collisionBoxes list at specified index */
-	BoundingBox* GetBox(String name);
+	void RenderBoxes(std::vector<GameObject*> gameObjects);
 
 	/* IdentifyBox */
 	/* Returns index of box specified by name, else -1 if the box doesn't exist */
 	int IdentifyBox(String n);
 
-	/* PlayersInBounds */
-	/* Checks to see if player is in bounds and still on screen */
-	matrix4 PlayerInBounds(matrix4 p, String name);
-
 	/* BallCollision */
 	/* Detects if there is a collision between a players paddle and the ball */
-	bool BallCollision(Player& p1, /*Player& p2,*/ Ball& b);
+	bool BallCollision(GameObject& player1, GameObject& player2, GameObject& ball);
 };
 #endif
 

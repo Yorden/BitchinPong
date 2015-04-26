@@ -16,10 +16,18 @@ public:
 
 	/* Destructor */
 	~Player();
+	
+	/* Init */
+	/* Initializes Player */
+	void Init();
 
 	/* Update */
 	/* Updates Player */
 	void Update();
+
+	/* Draw */
+	/* Draws Player */
+	void Draw() override;
 
 	/* Move */
 	/* Moves player in specified direction */

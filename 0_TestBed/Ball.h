@@ -18,9 +18,17 @@ public:
 	/* Destructor */
 	~Ball();
 
+	/* Init */
+	/* Initializes Ball */
+	void Init();
+
 	/* Update */
 	/* Updates ball */
 	void Update();
+
+	/* Draw */
+	/* Draws Ball */
+	void Draw();
 
 	/* Move */
 	/* Moves ball */

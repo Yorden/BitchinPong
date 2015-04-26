@@ -43,9 +43,24 @@ float GameObject::GetAcceleration() {
 	return acceleration;
 }
 
+/* Init */
+void GameObject::Init() {
+	meshManager = MeshManagerSingleton::GetInstance();
+	boundingBox = new BoundingBox(name, position);
+}
+
 /* Update */
 void GameObject::Update() {
 	if(glm::length(velocity) > 0.0f) {
 		Move();
 	}
+
+	meshManager->SetModelMatrix(position, name);
+	boundingBox->GenerateBoundingBox();
+	boundingBox->SetPosition(position);
+}
+
+/* Draw */
+void GameObject::Draw() {
+	meshManager->AddInstanceToRenderList(name);
 }
