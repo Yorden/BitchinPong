@@ -14,9 +14,23 @@ Player::Player(String n, matrix4 pos) :
 Player::~Player() {
 }
 
+/* Init */
+void Player::Init() {
+	GameObject::Init();
+	meshManager->LoadModelUnthreaded("Minecraft\\MC_Creeper.obj", name, position);
+	boundingBox->GenerateBoundingBox();
+	position *= glm::translate(-boundingBox->GetScale()/2.0f);
+	boundingBox->SetPosition(position);
+}
+
 /* Update */
 void Player::Update() {
 	GameObject::Update();
+}
+
+/* Draw */
+void Player::Draw() {
+	GameObject::Draw();
 }
 
 /* Move */
@@ -33,6 +47,9 @@ void Player::MovePlayer(int dir) {
 
 /* InBounds */
 bool Player::InBounds() {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1cf397df2ba96eea93282c200d94953723db71e8
 	return true;
 }
