@@ -22,7 +22,7 @@ GameManager::GameManager() {
 
 	player1 = new Player("Player1", glm::translate(vector3(-6.0f, 0.0f, 0.0f)));
 	player2 = new Player("Player2", glm::translate(vector3(6.0f, 0.0f, 0.0f)));
-	ball = new Ball(matrix4(IDENTITY), vector3(0.05, 0, 0));
+	ball = new Ball(matrix4(IDENTITY), vector3(0.01, 0, 0));
 
 	gameObjects.push_back(player1);
 	gameObjects.push_back(player2);
@@ -124,7 +124,6 @@ void GameManager::Update () {
 	player2->Update();
 	ball->Update();
 
-	
 	//Update the mesh information
 	meshManagerSingleton->Update();
 

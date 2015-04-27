@@ -26,6 +26,7 @@ void Player::Init() {
 /* Update */
 void Player::Update() {
 	GameObject::Update();
+	checkPlayerHeight();
 }
 
 /* Draw */
@@ -49,4 +50,17 @@ void Player::MovePlayer(int dir) {
 bool Player::InBounds() 
 {
 	return true;
+}
+
+void Player::checkPlayerHeight() 
+{
+	//2.0 -6
+	if(position[3][1] > 2.0f)
+	{
+		position[3][1] = 2.0f;
+	}
+	if(position[3][1] < -6.0f)
+	{
+		position[3][1] = -6.0f;
+	}
 }

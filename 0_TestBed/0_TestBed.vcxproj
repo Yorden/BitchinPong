@@ -107,6 +107,7 @@ xcopy "$(SolutionDir)include\ME\Shaders" "$(SolutionDir)_Binary\Shaders" /y</Com
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Ball.h" />
+    <ClInclude Include="Bomb.h" />
     <ClInclude Include="BoundingBox.h" />
     <ClInclude Include="..\res\Resource.h" />
     <ClInclude Include="CollisionManager.h" />
@@ -120,6 +121,7 @@ xcopy "$(SolutionDir)include\ME\Shaders" "$(SolutionDir)_Binary\Shaders" /y</Com
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Ball.cpp" />
+    <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="BoundingBox.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="FileIO.cpp" />
