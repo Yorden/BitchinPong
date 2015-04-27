@@ -46,10 +46,7 @@ void Player::MovePlayer(int dir) {
 }
 
 /* InBounds */
-bool Player::InBounds() {
-<<<<<<< HEAD
-
-=======
->>>>>>> 1cf397df2ba96eea93282c200d94953723db71e8
+bool Player::InBounds() 
+{
 	return true;
 }

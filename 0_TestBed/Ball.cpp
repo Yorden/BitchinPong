@@ -38,16 +38,19 @@ void Ball::Move() {
 }
 
 /* SwitchDirection */
-void Ball::SwitchDirection(String ballName, String collisName) {
+void Ball::SwitchDirection(String collisName)
+{
 	//Setting the velocity's x value to negative one, reversing it
 	velocity.x *= -1;
-
-	//Calculating the center points for both the ball and collision target
-	//vector3 ballCenter = getCenterPoint(ballName);
-	//vector3 collisCenter = getCenterPoint(collisName);
-
-	//Setting the y value of the velocity to the difference between the collision's center point and the ball's center point
-	//velocity.y = (collisCenter.y - ballCenter.y)/15.0f;
+	
+	//Calculating the center points for both the ball and collision target in the global positioning
+	vector3 ballCenter = vector3(meshManager->GetModelMatrix("Ball") * vector4(getCenterPoint("Ball"), 1.0f));
+	vector3 collisCenter = vector3(meshManager->GetModelMatrix(collisName) * vector4(getCenterPoint(collisName), 1.0f));
+	//std::cout << ballCenter.y << ", " << collisCenter.y << std::endl;
+	//The difference between the two points is calculated as the velocity's y value
+	velocity.y = (ballCenter.y - collisCenter.y)/15.0f;
+	//std::cout << velocity.y << std::endl;
+	
 }
 
 // checks if the ball went passed a player

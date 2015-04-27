@@ -128,8 +128,15 @@ void GameManager::Update () {
 	//Update the mesh information
 	meshManagerSingleton->Update();
 
-	if(collisionManager->BallCollision(*player1, *player2, *ball)) {
-		ball->SwitchDirection("Ball", "Player1");
+	if(collisionManager->BallCollision(*player1, /**player2,*/ *ball)) 
+	{
+		//ball->SwitchDirection("Ball", "Player1");
+		ball->SwitchDirection("Player1");
+	}
+	else if(collisionManager->BallCollision(*player2, /**player2,*/ *ball)) 
+	{
+		//ball->SwitchDirection("Ball", "Player1");
+		ball->SwitchDirection("Player2");
 	}
 
 	
@@ -221,7 +228,9 @@ void GameManager::Init( HINSTANCE hInstance, LPWSTR lpCmdLine, int nCmdShow)
 
 	// Get the singletons
 	cameraSingleton = CameraSingleton::GetInstance();
-	cameraSingleton->SetPosition(vector3(0, 0.0f, 10.0f));
+	//TEMPORARY SEE IF YOU LIKE AND CHANGE IF NOT
+	cameraSingleton->SetPosition(vector3(0.0f, 5.0f, 10.0f));
+	cameraSingleton->Rotate(0.5f, 0.0f);
 	
 	meshManagerSingleton = MeshManagerSingleton::GetInstance();
 

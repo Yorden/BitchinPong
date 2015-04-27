@@ -8,6 +8,7 @@
 
 #include "ME\MyEngine.h"
 #include "Player.h"
+
 class Ball : public GameObject
 {
 
@@ -36,7 +37,7 @@ public:
 
 	/* SwitchDirection */
 	/* Switches ball direction when it hits a paddle/wall */
-	void SwitchDirection(String ballName, String collisName);
+	void SwitchDirection(String collisName);
 
 	bool InBounds();
 
