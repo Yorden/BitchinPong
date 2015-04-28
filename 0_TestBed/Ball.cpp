@@ -6,8 +6,8 @@
 #include "Ball.h"
 
 /* Constructor */
-Ball::Ball(matrix4 pos, vector3 vel) :
-	GameObject("Ball", pos, vel, 0.001, 0.05) {
+Ball::Ball(String ballName, matrix4 pos, vector3 vel) :
+	GameObject(ballName, pos, vel, 0.1, 0.1) {
 }
 
 /* Destructor */
@@ -38,17 +38,17 @@ void Ball::Move() {
 }
 
 /* SwitchDirection */
-void Ball::SwitchDirection(String collisName)
+void Ball::SwitchDirection(String ballName, String collisName)
 {
 	//Setting the velocity's x value to negative one, reversing it
 	velocity.x *= -1;
 	
 	//Calculating the center points for both the ball and collision target in the global positioning
-	vector3 ballCenter = vector3(meshManager->GetModelMatrix("Ball") * vector4(getCenterPoint("Ball"), 1.0f));
+	vector3 ballCenter = vector3(meshManager->GetModelMatrix(ballName) * vector4(getCenterPoint(ballName), 1.0f));
 	vector3 collisCenter = vector3(meshManager->GetModelMatrix(collisName) * vector4(getCenterPoint(collisName), 1.0f));
 	//std::cout << ballCenter.y << ", " << collisCenter.y << std::endl;
 	//The difference between the two points is calculated as the velocity's y value
-	velocity.y = (ballCenter.y - collisCenter.y)/15.0f;
+	velocity.y = (ballCenter.y - collisCenter.y)/10.0f;
 	//std::cout << velocity.y << std::endl;
 	
 }

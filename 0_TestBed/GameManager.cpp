@@ -22,11 +22,13 @@ GameManager::GameManager() {
 
 	player1 = new Player("Player1", glm::translate(vector3(-6.0f, 0.0f, 0.0f)));
 	player2 = new Player("Player2", glm::translate(vector3(6.0f, 0.0f, 0.0f)));
-	ball = new Ball(matrix4(IDENTITY), vector3(0.01, 0, 0));
+	ball1 = new Ball("Ball1", matrix4(IDENTITY), vector3(0.01, 0, 0));
+	ball2 = new Ball("Ball2", matrix4(IDENTITY), vector3(-0.01, 0, 0));
 
 	gameObjects.push_back(player1);
 	gameObjects.push_back(player2);
-	gameObjects.push_back(ball);
+	gameObjects.push_back(ball1);
+	gameObjects.push_back(ball2);
 }
 
 /* Copy Constructor */
@@ -122,22 +124,30 @@ void GameManager::Update () {
 
 	player1->Update();
 	player2->Update();
-	ball->Update();
+	ball1->Update();
+	ball2->Update();
 
 	//Update the mesh information
 	meshManagerSingleton->Update();
 
-	if(collisionManager->BallCollision(*player1, /**player2,*/ *ball)) 
+	if(collisionManager->BallCollision(*player1, /**player2,*/ *ball1)) 
 	{
 		//ball->SwitchDirection("Ball", "Player1");
-		ball->SwitchDirection("Player1");
+		ball1->SwitchDirection("Ball1", "Player1");
 	}
-	else if(collisionManager->BallCollision(*player2, /**player2,*/ *ball)) 
+	else if(collisionManager->BallCollision(*player2, *ball1)) 
 	{
-		//ball->SwitchDirection("Ball", "Player1");
-		ball->SwitchDirection("Player2");
+		ball1->SwitchDirection("Ball1", "Player2");
 	}
 
+	if(collisionManager->BallCollision(*player1, *ball2)) 
+	{
+		ball2->SwitchDirection("Ball2", "Player1");
+	}
+	else if(collisionManager->BallCollision(*player2, *ball2)) 
+	{
+		ball2->SwitchDirection("Ball2", "Player2");
+	}
 	
 	//First person camera movement
 	if(m_bFPC == true)
@@ -154,7 +164,8 @@ void GameManager::Display (void) {
 
 	player1->Draw();
 	player2->Draw();
-	ball->Draw();
+	ball1->Draw();
+	ball2->Draw();
 	collisionManager->RenderBoxes(gameObjects);
 
 	meshManagerSingleton->Render();
@@ -250,7 +261,8 @@ void GameManager::Init( HINSTANCE hInstance, LPWSTR lpCmdLine, int nCmdShow)
 void GameManager::InitGameObjects() {
 	player1->Init();
 	player2->Init();
-	ball->Init();
+	ball1->Init();
+	ball2->Init();
 	meshManagerSingleton->Update();
 }
 

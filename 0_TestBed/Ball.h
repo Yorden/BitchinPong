@@ -14,7 +14,7 @@ class Ball : public GameObject
 
 public:
 	/* Constructor */
-	Ball(matrix4 pos, vector3 vel);
+	Ball(String ballName, matrix4 pos, vector3 vel);
 	
 	/* Destructor */
 	~Ball();
@@ -37,7 +37,7 @@ public:
 
 	/* SwitchDirection */
 	/* Switches ball direction when it hits a paddle/wall */
-	void SwitchDirection(String collisName);
+	void SwitchDirection(String ballName,  String collisName);
 
 	bool InBounds();
 
