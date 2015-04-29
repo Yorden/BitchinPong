@@ -3,6 +3,7 @@
 /* DSA II - 309.02 */
 /* Spring 2015 */
 
+#ifndef BOMB
 #define BOMB
 
 #include "ME\MyEngine.h"
@@ -41,4 +42,5 @@ public:
 
 	vector3 getCenterPoint(String targetMatName);
 };
+#endif
 

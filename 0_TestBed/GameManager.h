@@ -18,8 +18,6 @@ using namespace MyEngine; // So we can access classes in dll
 
 class GameManager
 {
-	bool m_bFPC;// First Person Camera flag
-	bool m_bArcBall;// Arcball flag
 	vector4 windowColor;
 
 	// Game variables
@@ -27,7 +25,6 @@ class GameManager
 	Player* player1;
 	Player* player2;
 	Ball* ball1;
-	Ball* ball2;
 
 	// Singletons
 	static GameManager* instance; // GameManager singleton
@@ -103,14 +100,6 @@ private:
 	/* ProcessMouse */
 	/*  Process user mouse input */
 	void ProcessMouse();
-
-	/* ArcBall */
-	/* Process the arcball of the scene, rotating an object in the center of it a_fSensitivity is a factor of change */
-	void ArcBall(float a_fSensitivity = 0.1f);
-
-	/* CameraRotation */
-	/* Manages the rotation of the camera a_fSpeed is a factor of change */
-	void CameraRotation(float a_fSpeed = 0.001f);
 
 	void ReadConfig();
 

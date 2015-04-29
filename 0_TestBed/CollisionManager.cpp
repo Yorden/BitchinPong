@@ -23,8 +23,9 @@ CollisionManager* CollisionManager::GetInstance() {
 }
 
 /* Update */
-void CollisionManager::Update() {
-	
+void CollisionManager::Update(Player& player1, Player& player2, Ball& ball, std::vector<GameObject*> gameObjects, std::vector<Bomb*> bombs) {
+	PlayerCollision(player1, ball);
+	PlayerCollision(player2, ball);
 }
 
 /* RenderBoxes */
@@ -37,42 +38,17 @@ void CollisionManager::RenderBoxes(std::vector<GameObject*> gameObjects) {
 }
 
 /* BallCollision */
-bool CollisionManager::BallCollision(GameObject& player1, /*GameObject& player2,*/ GameObject& ball) {
-	BoundingBox* p1 = player1.boundingBox;
-	//BoundingBox* p2 = player2.boundingBox;
-	BoundingBox* b = ball.boundingBox;
-
-	float p1Left = vector3(player1.GetPosition() * vector4(p1->GetCentroid(), 1.0f)).x - p1->GetScale().x/2.0f;
-	float p1Right = vector3(player1.GetPosition() * vector4(p1->GetCentroid(), 1.0f)).x + p1->GetScale().x/2.0f;
-	float p1Top = vector3(player1.GetPosition() * vector4(p1->GetCentroid(), 1.0f)).y + p1->GetScale().y/2.0f;
-	float p1Bottom = vector3(player1.GetPosition() * vector4(p1->GetCentroid(), 1.0f)).y - p1->GetScale().y/2.0f;
-
-	//float p2Left = vector3(player2.GetPosition() * vector4(p2->GetCentroid(), 1.0f)).x - p2->GetScale().x/2.0f;
-	//float p2Right = vector3(player2.GetPosition() * vector4(p2->GetCentroid(), 1.0f)).x + p2->GetScale().x/2.0f;
-	//float p2Top = vector3(player2.GetPosition() * vector4(p2->GetCentroid(), 1.0f)).y + p2->GetScale().y/2.0f;
-	//float p2Bottom = vector3(player2.GetPosition() * vector4(p2->GetCentroid(), 1.0f)).y - p2->GetScale().y/2.0f;
-
-	float bLeft = vector3(ball.GetPosition() * vector4(b->GetCentroid(), 1.0f)).x - b->GetScale().x/2.0f;
-	float bRight = vector3(ball.GetPosition() * vector4(b->GetCentroid(), 1.0f)).x + b->GetScale().x/2.0f;
-	float bTop = vector3(ball.GetPosition() * vector4(b->GetCentroid(), 1.0f)).y + b->GetScale().y/2.0f;
-	float bBottom = vector3(ball.GetPosition() * vector4(b->GetCentroid(), 1.0f)).y - b->GetScale().y/2.0f;
-
+bool CollisionManager::PlayerCollision(Player& player, Ball& ball) {
 	/* Player1 Check */
-	if (bLeft < p1Right &&
-		bRight > p1Left &&
-		bBottom < p1Top &&
-		bTop > p1Bottom) {
-			return true;
+	if (player.boundingBox->CollidesWith(*ball.boundingBox)) {
+		ball.SwitchDirection(ball.GetName(), player.GetName());
+		return true;
 	}
+	return false;
+}
 
-	/* Player2 Check */
-	//if (bLeft < p2Right &&
-	//	bRight > p2Left &&
-	//	bBottom < p2Top &&
-	//	bTop > p2Bottom) {
-	//		return true;
-	//}
-
+/* BombCollisions */
+bool CollisionManager::BombCollision(Ball& ball, std::vector<Bomb*>& bombs) {
 	return false;
 }
 

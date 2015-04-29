@@ -56,6 +56,10 @@ public:
 	/* Returns true if the box contains the point specified */
 	bool Contains(vector3 point);
 
+	/* CollidesWith */
+	/* Returns true if colliding with other specified box */
+	bool CollidesWith(BoundingBox& other);
+
 	/* AddToRenderList */
 	/* Creates visual representation of collision rectangle surrounding model */
 	void AddToRenderList();

@@ -11,7 +11,6 @@
 
 class Ball : public GameObject
 {
-
 public:
 	/* Constructor */
 	Ball(String ballName, matrix4 pos, vector3 vel);
@@ -39,6 +38,8 @@ public:
 	/* Switches ball direction when it hits a paddle/wall */
 	void SwitchDirection(String ballName,  String collisName);
 
+	/* InBounds */
+	/* Returns true if the ball is within the bounds of the playing field */
 	bool InBounds();
 
 	vector3 getCenterPoint(String targetMatName);

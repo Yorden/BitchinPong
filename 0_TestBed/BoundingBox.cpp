@@ -92,6 +92,28 @@ bool BoundingBox::Contains(vector3 point) {
 	return false;
 }
 
+/* CollidesWith */
+bool BoundingBox::CollidesWith(BoundingBox& other) {
+	float minX = (position * vector4(centroid, 1.0f)).x - scale.x/2.0f;
+	float maxX = (position * vector4(centroid, 1.0f)).x + scale.x/2.0f;
+	float minY = (position * vector4(centroid, 1.0f)).y - scale.y/2.0f;
+	float maxY = (position * vector4(centroid, 1.0f)).y + scale.y/2.0f;
+
+	float otherMinX = (other.position * vector4(other.centroid, 1.0f)).x - other.scale.x/2.0f;
+	float otherMaxX = (other.position * vector4(other.centroid, 1.0f)).x + other.scale.x/2.0f;
+	float otherMinY = (other.position * vector4(other.centroid, 1.0f)).y - other.scale.y/2.0f;
+	float otherMaxY = (other.position * vector4(other.centroid, 1.0f)).y + other.scale.y/2.0f;
+
+	if (minX < otherMaxX &&
+		maxX > otherMinX &&
+		minY < otherMaxY &&
+		maxY > otherMinY) {
+			return true;
+	}
+	
+	return false;
+}
+
 /* AddToRenderList */
 void BoundingBox::AddToRenderList() {
 	MeshManagerSingleton* meshManager = MeshManagerSingleton::GetInstance();
