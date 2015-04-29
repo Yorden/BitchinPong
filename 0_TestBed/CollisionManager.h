@@ -25,7 +25,7 @@ public:
 
 	/* Update */
 	/* Updates CollisionManager */
-	void Update(Player& player, Player& player2, Ball& ball, std::vector<GameObject*> gameObjects, std::vector<Bomb*> bombs);
+	void Update(Player& player, Player& player2, Ball& ball1, Ball& ball2, std::vector<GameObject*> gameObjects, std::vector<Bomb*> bombs);
 
 	/* RenderBoxes */
 	/* Draws cubes around models representing visualization of bounding box */
@@ -38,6 +38,10 @@ public:
 	/* BallCollision */
 	/* Detects if there is a collision between a players paddle and the ball */
 	bool PlayerCollision(Player& player, Ball& ball);
+
+	/* BallBallCollision */
+	/* Detects if there is a collision between the two balls */
+	bool BallBallCollision(Ball& ball1, Ball& ball2);
 
 	/* BombCollision */
 	/* Checks for collisions between the ball and bombs */

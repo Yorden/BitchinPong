@@ -38,33 +38,77 @@ void Ball::Move() {
 }
 
 /* SwitchDirection */
-void Ball::SwitchDirection(String ballName, String collisName)
+void Ball::SwitchDirection(GameObject& ball, GameObject& collis)
 {
 	//Setting the velocity's x value to negative one, reversing it
 	velocity.x *= -1;
 	
 	//Calculating the center points for both the ball and collision target in the global positioning
-	vector3 ballCenter = vector3(meshManager->GetModelMatrix(ballName) * vector4(getCenterPoint(ballName), 1.0f));
-	vector3 collisCenter = vector3(meshManager->GetModelMatrix(collisName) * vector4(getCenterPoint(collisName), 1.0f));
-	//std::cout << ballCenter.y << ", " << collisCenter.y << std::endl;
+	vector3 ballCenter = vector3(meshManager->GetModelMatrix(ball.GetName()) * vector4(getCenterPoint(ball.GetName()), 1.0f));
+	vector3 collisCenter = vector3(meshManager->GetModelMatrix(collis.GetName()) * vector4(getCenterPoint(collis.GetName()), 1.0f));
+
 	//The difference between the two points is calculated as the velocity's y value
 	velocity.y = (ballCenter.y - collisCenter.y)/10.0f;
-	//std::cout << velocity.y << std::endl;
-	
+
+	//Capping the y velocity of the ball
+	if(velocity.y > 0.05)
+	{
+		velocity.y = 0.05;
+	}
+	else if(velocity.y < -0.05)
+	{
+		velocity.y = -0.05;
+	}
+}
+
+//A function to handle balls interacting with other balls
+void Ball::ballOnBallCollision(GameObject& thisBall, GameObject& otherBall)
+{
+	//Getting the center of the balls as above
+	vector3 thisBallCenter = vector3(meshManager->GetModelMatrix(thisBall.GetName()) * vector4(getCenterPoint(thisBall.GetName()), 1.0f));
+	vector3 otherBallCenter = vector3(meshManager->GetModelMatrix(otherBall.GetName()) * vector4(getCenterPoint(otherBall.GetName()), 1.0f));
+
+	//If the balls have a difference of y values that is greater than the difference between x values, the balls will change y values
+	if((thisBallCenter.y - otherBallCenter.y) > (thisBallCenter.x - otherBallCenter.x))
+	{
+		velocity.y *= -1;
+	}
+	//Otherwise, they will negate their x values
+	else
+	{
+		velocity.x *= -1;
+	}
 }
 
 // checks if the ball went passed a player
 bool Ball::InBounds(){
+	//Getting a random number between 0 and 1. This will be used to determine if the balls will go left or right
+	float randXDirect = (rand() % 2);
+	
+	//Another random value will determine the y angle of the ball 
+	float randYDirect = (rand() % 95 + 5);
+	//The random number is subtracted by 50, meaning it will either be in the positive range or a negative value
+	randYDirect -= 50;
+	//The numebr is divided by a large number to bring it into the proper range
+	randYDirect /= 1000;	
+
 	//X Value: Will move back into center position 
 	if(position[3][0] > 10 || position[3][0] < -10) {
-		velocity = vector3(0.05,0,0);
+		if(randXDirect == 0)
+		{
+			velocity = vector3(0.05,randYDirect,0);
+		}
+		else 
+		{
+			velocity = vector3(-0.05,randYDirect,0);
+		}
 		position[3][0] = 0;
 		position[3][1] = 0;
 		return true;
 	}
 
 	//Y Value: Will bounce by reversing y value of the velocity
-	if(position[3][1] > 5.5 || position[3][1] < -5.5) {
+	if(position[3][1] > 3.5 || position[3][1] < -5.5) {
 		velocity.y *= -1;
 		return true;
 	}

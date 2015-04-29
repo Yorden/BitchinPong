@@ -23,9 +23,15 @@ CollisionManager* CollisionManager::GetInstance() {
 }
 
 /* Update */
-void CollisionManager::Update(Player& player1, Player& player2, Ball& ball, std::vector<GameObject*> gameObjects, std::vector<Bomb*> bombs) {
-	PlayerCollision(player1, ball);
-	PlayerCollision(player2, ball);
+void CollisionManager::Update(Player& player1, Player& player2, Ball& ball1, Ball& ball2, std::vector<GameObject*> gameObjects, std::vector<Bomb*> bombs) {
+	PlayerCollision(player1, ball1);
+	PlayerCollision(player2, ball1);
+
+	PlayerCollision(player1, ball2);
+	PlayerCollision(player2, ball2);
+
+	BallBallCollision(ball1, ball2);
+	BallBallCollision(ball2, ball1);
 }
 
 /* RenderBoxes */
@@ -41,7 +47,16 @@ void CollisionManager::RenderBoxes(std::vector<GameObject*> gameObjects) {
 bool CollisionManager::PlayerCollision(Player& player, Ball& ball) {
 	/* Player1 Check */
 	if (player.boundingBox->CollidesWith(*ball.boundingBox)) {
-		ball.SwitchDirection(ball.GetName(), player.GetName());
+		ball.SwitchDirection(ball, player);
+		return true;
+	}
+	return false;
+}
+
+/* BallCollision */
+bool CollisionManager::BallBallCollision(Ball& ball1, Ball& ball2) {
+	if (ball1.boundingBox->CollidesWith(*ball2.boundingBox)) {
+		ball1.ballOnBallCollision(ball1, ball2);
 		return true;
 	}
 	return false;

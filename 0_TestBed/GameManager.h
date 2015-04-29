@@ -18,6 +18,8 @@ using namespace MyEngine; // So we can access classes in dll
 
 class GameManager
 {
+	bool m_bFPC;// First Person Camera flag
+	bool m_bArcBall;// Arcball flag
 	vector4 windowColor;
 
 	// Game variables
@@ -25,6 +27,7 @@ class GameManager
 	Player* player1;
 	Player* player2;
 	Ball* ball1;
+	Ball* ball2;
 
 	// Singletons
 	static GameManager* instance; // GameManager singleton

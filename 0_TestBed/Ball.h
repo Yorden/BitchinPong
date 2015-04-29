@@ -9,6 +9,8 @@
 #include "ME\MyEngine.h"
 #include "Player.h"
 
+#include <stdlib.h>
+#include <time.h>
 class Ball : public GameObject
 {
 public:
@@ -34,12 +36,13 @@ public:
 	/* Moves ball */
 	void Move() override;
 
-	/* SwitchDirection */
-	/* Switches ball direction when it hits a paddle/wall */
-	void SwitchDirection(String ballName,  String collisName);
+	/* SwitchDirection */	
+	void SwitchDirection(GameObject& ball,  GameObject& collis);
 
-	/* InBounds */
-	/* Returns true if the ball is within the bounds of the playing field */
+	//The function to handle balls running into one another
+	void ballOnBallCollision(GameObject& thisBall, GameObject& otherBall);
+
+	/* Switches ball direction when it hits a paddle/wall */
 	bool InBounds();
 
 	vector3 getCenterPoint(String targetMatName);
