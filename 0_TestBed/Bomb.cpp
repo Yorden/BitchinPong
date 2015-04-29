@@ -6,8 +6,8 @@
 #include "Bomb.h"
 
 
-Bomb::Bomb(matrix4 pos):
-	GameObject("Bomb", pos, vector3(0,0,0), 0.0f, 0.0f)
+Bomb::Bomb(String n, matrix4 pos):
+	GameObject(n, pos, vector3(2.0f), 0.0f, 0.0f)
 {
 }
 
@@ -17,8 +17,9 @@ Bomb::~Bomb(void)
 
 void Bomb::Init() {
 	GameObject::Init();
-	meshManager->LoadModelUnthreaded("Minecraft\\CubePrimitive.obj", name, position);
+	meshManager->LoadModelUnthreaded("Minecraft\\CubePrimitive.obj", name, position * glm::scale(vector3(3.0f)));
 	boundingBox->GenerateBoundingBox();
+	boundingBox->scale *= 3.0f;
 }
 
 /* Update */

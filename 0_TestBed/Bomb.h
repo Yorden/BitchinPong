@@ -7,11 +7,13 @@
 
 #include "ME\MyEngine.h"
 #include "Player.h"
+
 class Bomb : public GameObject
 {
 public:
 	/*Constructor*/
-	Bomb(matrix4 pos);
+	Bomb(String n, matrix4 pos);
+
 	/* Destructor */
 	~Bomb(void);
 

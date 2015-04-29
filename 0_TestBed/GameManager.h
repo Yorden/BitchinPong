@@ -10,6 +10,7 @@
 #include "CollisionManager.h"
 #include "Player.h"
 #include "Ball.h"
+#include "BombSpawnManager.h"
 #include <SFML\Graphics.hpp>
 #include <chrono>
 
@@ -36,6 +37,7 @@ class GameManager
 	GLSystemSingleton* openGLSingleton; // OpenGL singleton for rendering context
 	LightManagerSingleton* lightManagerSingleton; // Light manager singleton
 	MeshManagerSingleton* meshManagerSingleton; // Mesh manager singleton
+	BombSpawnManager* bombSpawnManager; // Bomb manager singleton
 	GridClass* grid; // Grid that represents coordinate system
 	WindowClass* window; // Window class
 
@@ -110,13 +112,9 @@ private:
 	/* Manages the rotation of the camera a_fSpeed is a factor of change */
 	void CameraRotation(float a_fSpeed = 0.001f);
 
-	/* ReadConfig */
-	/* Reads the configuration of the application to a file */
 	void ReadConfig();
 
-	/* WriteConfig */
-	/* Writes the configuration of the application to a file */
-	void WriteConfig(void);
+	void WriteConfig();
 };
 
 #endif

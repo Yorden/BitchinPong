@@ -7,7 +7,7 @@
 
 /* Constructor */
 Player::Player(String n, matrix4 pos) : 
-	GameObject(n, pos, vector3(0), 0.05f, 0.005f) {
+	GameObject(n, pos, vector3(0), 0.1f, 0.005f) {
 }
 
 /* Destructor */
@@ -26,7 +26,7 @@ void Player::Init() {
 /* Update */
 void Player::Update() {
 	GameObject::Update();
-	checkPlayerHeight();
+	InBounds();
 }
 
 /* Draw */
@@ -49,18 +49,18 @@ void Player::MovePlayer(int dir) {
 /* InBounds */
 bool Player::InBounds() 
 {
-	return true;
-}
+	float minY = position[3].y + boundingBox->GetCentroid().y - boundingBox->GetScale().y/2;
+	float maxY = position[3].y + boundingBox->GetCentroid().y + boundingBox->GetScale().y/2;
 
-void Player::checkPlayerHeight() 
-{
 	//2.0 -6
-	if(position[3][1] > 2.0f)
-	{
-		position[3][1] = 2.0f;
+	if(maxY > 5.5f) {
+		position[3][1] = 5.5f - boundingBox->GetScale().y;
+		return false;
 	}
-	if(position[3][1] < -6.0f)
-	{
-		position[3][1] = -6.0f;
+	else if(minY < -5.5f) {
+		position[3][1] = -5.5f;
+		return false;
 	}
+
+	return true;
 }

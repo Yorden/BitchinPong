@@ -4,6 +4,7 @@ CollisionManager* CollisionManager::instance = nullptr;
 
 /* Constructor */
 CollisionManager::CollisionManager(){
+	boundsScale = vector3(10.0f, 5.5f, 0.1f);
 }
 
 /* Destructor */
@@ -73,4 +74,10 @@ bool CollisionManager::BallCollision(GameObject& player1, /*GameObject& player2,
 	//}
 
 	return false;
+}
+
+/* DrawBounds */
+void CollisionManager::DrawBounds() {
+	MeshManagerSingleton* meshManager = MeshManagerSingleton::GetInstance();
+	meshManager->AddCubeToQueue(matrix4(IDENTITY) * glm::scale(boundsScale * 2.0f), MERED, MERENDER::WIRE);
 }

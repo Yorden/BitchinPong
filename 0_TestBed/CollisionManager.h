@@ -9,6 +9,7 @@
 class CollisionManager
 {
 	static CollisionManager* instance;
+	vector3 boundsScale;
 
 public:
 	/* Constructor */
@@ -36,6 +37,10 @@ public:
 	/* BallCollision */
 	/* Detects if there is a collision between a players paddle and the ball */
 	bool BallCollision(GameObject& player1, /*GameObject& player2,*/ GameObject& ball);
+
+	/* DrawBounds */
+	/* Draws square representing the bounds of the playing area */
+	void DrawBounds();
 };
 #endif
 

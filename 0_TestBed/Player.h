@@ -40,10 +40,6 @@ public:
 	/* InBounds */
 	/* Checks to see if Player is in bounds */
 	bool InBounds();
-
-	/* InBounds */
-	/* Checks to see if Player is in bounds */
-	void checkPlayerHeight();
 };
 #endif
 

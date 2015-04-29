@@ -19,11 +19,12 @@ GameManager::GameManager() {
 	openGLSingleton = nullptr;
 	lightManagerSingleton = nullptr;
 	collisionManager  = CollisionManager::GetInstance();
+	bombSpawnManager = BombSpawnManager::GetInstance();
 
-	player1 = new Player("Player1", glm::translate(vector3(-6.0f, 0.0f, 0.0f)));
-	player2 = new Player("Player2", glm::translate(vector3(6.0f, 0.0f, 0.0f)));
-	ball1 = new Ball("Ball1", matrix4(IDENTITY), vector3(0.01, 0, 0));
-	ball2 = new Ball("Ball2", matrix4(IDENTITY), vector3(-0.01, 0, 0));
+	player1 = new Player("Player1", glm::translate(vector3(-8.0f, 0.0f, 0.0f)));
+	player2 = new Player("Player2", glm::translate(vector3(8.0f, 0.0f, 0.0f)));
+	ball1 = new Ball("Ball1", matrix4(IDENTITY), vector3(0.05, 0, 0));
+	ball2 = new Ball("Ball2", matrix4(IDENTITY), vector3(-0.05, 0, 0));
 
 	gameObjects.push_back(player1);
 	gameObjects.push_back(player2);
@@ -127,6 +128,12 @@ void GameManager::Update () {
 	ball1->Update();
 	ball2->Update();
 
+	for(int i = 0; i < bombSpawnManager->bombs.size(); i++) {
+		if(bombSpawnManager->bombs[i]->boundingBox->Contains(vector3(ball1->GetPosition() * vector4(ball1->boundingBox->GetCentroid(), 1.0f)))) {
+			std::cout << "Hey";
+		}
+	}
+
 	//Update the mesh information
 	meshManagerSingleton->Update();
 
@@ -167,6 +174,8 @@ void GameManager::Display (void) {
 	ball1->Draw();
 	ball2->Draw();
 	collisionManager->RenderBoxes(gameObjects);
+	collisionManager->DrawBounds();
+	bombSpawnManager->DrawBombs();
 
 	meshManagerSingleton->Render();
 
@@ -239,8 +248,8 @@ void GameManager::Init( HINSTANCE hInstance, LPWSTR lpCmdLine, int nCmdShow)
 	// Get the singletons
 	cameraSingleton = CameraSingleton::GetInstance();
 	//TEMPORARY SEE IF YOU LIKE AND CHANGE IF NOT
-	cameraSingleton->SetPosition(vector3(0.0f, 5.0f, 10.0f));
-	cameraSingleton->Rotate(0.5f, 0.0f);
+	cameraSingleton->SetPosition(vector3(0.0f, -10.0f, 10.0f));
+	cameraSingleton->Rotate(-0.7f, 0.0f);
 	
 	meshManagerSingleton = MeshManagerSingleton::GetInstance();
 
@@ -264,6 +273,12 @@ void GameManager::InitGameObjects() {
 	ball1->Init();
 	ball2->Init();
 	meshManagerSingleton->Update();
+
+	bombSpawnManager->SpawnBomb(gameObjects);
+	bombSpawnManager->SpawnBomb(gameObjects);
+	bombSpawnManager->SpawnBomb(gameObjects);
+	bombSpawnManager->SpawnBomb(gameObjects);
+	bombSpawnManager->SpawnBomb(gameObjects);
 }
 
 void GameManager::InitInternalAppVariables() {

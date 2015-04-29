@@ -10,6 +10,7 @@
 
 class BoundingBox
 {
+public:
 	String name; // Name used to relate to instance in mesh manager
 	vector3 scale; // Size of rectangle
 	matrix4 position; // Box position
@@ -17,7 +18,6 @@ class BoundingBox
 	vector3 minVertices; // Min xy-values of rectangle
 	vector3 maxVertices; // Max xy-values of rectangle
 
-public:
 	/* Constructor */
 	BoundingBox(String n, matrix4 pos);
 
@@ -52,8 +52,13 @@ public:
 	/* Creates collision rectangle around specified model */
 	void GenerateBoundingBox();
 
+	/* Contains */
+	/* Returns true if the box contains the point specified */
+	bool Contains(vector3 point);
+
 	/* AddToRenderList */
 	/* Creates visual representation of collision rectangle surrounding model */
 	void AddToRenderList();
+
 };
 #endif

@@ -7,7 +7,7 @@
 
 /* Constructor */
 Ball::Ball(String ballName, matrix4 pos, vector3 vel) :
-	GameObject(ballName, pos, vel, 0.1, 0.1) {
+	GameObject(ballName, pos, vel, 0.5, 0.1) {
 }
 
 /* Destructor */
@@ -57,14 +57,14 @@ void Ball::SwitchDirection(String ballName, String collisName)
 bool Ball::InBounds(){
 	//X Value: Will move back into center position 
 	if(position[3][0] > 10 || position[3][0] < -10) {
-		velocity = vector3(0.01,0,0);
+		velocity = vector3(0.05,0,0);
 		position[3][0] = 0;
 		position[3][1] = 0;
 		return true;
 	}
 
 	//Y Value: Will bounce by reversing y value of the velocity
-	if(position[3][1] > 3.5 || position[3][1] < -5.5) {
+	if(position[3][1] > 5.5 || position[3][1] < -5.5) {
 		velocity.y *= -1;
 		return true;
 	}
