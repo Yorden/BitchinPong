@@ -48,7 +48,7 @@ void Ball::SwitchDirection(GameObject& ball, GameObject& collis)
 	vector3 collisCenter = vector3(meshManager->GetModelMatrix(collis.GetName()) * vector4(getCenterPoint(collis.GetName()), 1.0f));
 
 	//The difference between the two points is calculated as the velocity's y value
-	velocity.y = (ballCenter.y - collisCenter.y)/10.0f;
+	velocity.y = (ballCenter.y - collisCenter.y)/5.0f;
 
 	//Capping the y velocity of the ball
 	if(velocity.y > 0.05)
@@ -92,6 +92,13 @@ bool Ball::InBounds(){
 	//The numebr is divided by a large number to bring it into the proper range
 	randYDirect /= 1000;	
 
+
+	float randSpawnX = (rand() % 12);
+	randSpawnX -= 6;
+
+	float randSpawnY = (rand() % 6);
+	randSpawnY -= 3;
+
 	//X Value: Will move back into center position 
 	if(position[3][0] > 10 || position[3][0] < -10) {
 		if(randXDirect == 0)
@@ -102,8 +109,8 @@ bool Ball::InBounds(){
 		{
 			velocity = vector3(-0.05,randYDirect,0);
 		}
-		position[3][0] = 0;
-		position[3][1] = 0;
+		position[3][0] = randSpawnX;
+		position[3][1] = randSpawnY;
 		return true;
 	}
 

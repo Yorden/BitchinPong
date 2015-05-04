@@ -31,7 +31,6 @@ void CollisionManager::Update(Player& player1, Player& player2, Ball& ball1, Bal
 	PlayerCollision(player2, ball2);
 
 	BallBallCollision(ball1, ball2);
-	BallBallCollision(ball2, ball1);
 }
 
 /* RenderBoxes */

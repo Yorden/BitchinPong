@@ -29,8 +29,13 @@ std::vector<Bomb*> BombSpawnManager::GetBombs() {
 /* SpawnBomb */
 void BombSpawnManager::SpawnBomb(std::vector<GameObject*>& gameObjects) {
 	String name = "Bomb" + std::to_string(bombs.size());
-	float randX = (std::rand() % 11) - (std::rand() % 11);
-	float randY = (std::rand() % 5) - (std::rand() % 5);
+	//float randX = (std::rand() % 7) - (std::rand() % 7);
+	//float randY = (std::rand() % 3) - (std::rand() % 3);
+	float randX = (rand() % 12);
+	randX -= 6;
+
+	float randY = (rand() % 4);
+	randY -= 2;
 	
 	Bomb* b = new Bomb(name, matrix4(IDENTITY) * glm::translate(vector3(randX, randY, 0.0f)));
 	b->Init();
