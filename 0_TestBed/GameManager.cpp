@@ -135,6 +135,20 @@ void GameManager::Update () {
 	{
 		if(collisionManager->BombCollision(*ball1, bombSpawnManager->bombs[i]))
 		{
+			//String name = "ball" + std::to_string(ballVect.size());
+
+			//float randX = (rand() % 38);
+			//randX -= 20;
+
+			//float randY = (rand() % 18);
+			//randY -= 10;
+	
+			//Ball* b = new Ball(name, matrix4(IDENTITY) * glm::translate(vector3(randX, randY, 0.0f)), player1, player2);
+			//b->Init();
+
+			//ballVect.push_back(b);
+			//gameObjects.push_back(b);
+
 			bombSpawnManager->bombs[i]->~Bomb();
 			//bombSpawnManager->bombs[i]->boundingBox->~BoundingBox();
 		}
