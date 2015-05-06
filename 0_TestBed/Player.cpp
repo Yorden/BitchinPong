@@ -18,7 +18,7 @@ Player::~Player() {
 void Player::Init() {
 	GameObject::Init();
 	meshManager->LoadModelUnthreaded("Minecraft\\MC_Creeper.obj", name, position);
-	boundingBox->GenerateBoundingBox();
+	boundingBox->GenerateBoundingBox_Model();
 	position *= glm::translate(-boundingBox->GetScale()/2.0f);
 	boundingBox->SetPosition(position);
 }

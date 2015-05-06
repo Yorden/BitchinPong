@@ -49,8 +49,8 @@ void BoundingBox::SetPosition(matrix4 pos) {
 	position = pos;
 }
 
-/* GenerateBoundingBox */
-void BoundingBox::GenerateBoundingBox() {
+/* GenerateBoundingBox_Model */
+void BoundingBox::GenerateBoundingBox_Model() {
 	MeshManagerSingleton* mesh = MeshManagerSingleton::GetInstance();
 
 	std::vector<vector3> vertices = mesh->GetVertices(name);
@@ -75,12 +75,25 @@ void BoundingBox::GenerateBoundingBox() {
 	}
 }
 
+/* GenerateBoundingBox_Manual */
+void BoundingBox::GenerateBoundingBox_Manual(matrix4 pos, vector3 s) {
+	float left  = -s.x/2;
+	float right = s.x/2;
+	float top = s.y/2;
+	float bottom  = -s.y/2;
+
+	minVertices = vector3(left, bottom, 0.0f);
+	maxVertices = vector3(right, top, 0.0f);
+	centroid = (minVertices + maxVertices) / 2.0f;
+	scale = s;
+}
+
 /* Contains */
 bool BoundingBox::Contains(vector3 point) {
-	float minX = (position * vector4(centroid, 1.0f)).x + (minVertices.x * scale.x);
-	float maxX = (position * vector4(centroid, 1.0f)).x + (maxVertices.x * scale.x);
-	float minY = (position * vector4(centroid, 1.0f)).y + (minVertices.y * scale.y);
-	float maxY = (position * vector4(centroid, 1.0f)).y + (maxVertices.y * scale.y);
+	float minX = (position * vector4(centroid, 1.0f)).x - scale.x / 2;
+	float maxX = (position * vector4(centroid, 1.0f)).x + scale.x / 2;
+	float minY = (position * vector4(centroid, 1.0f)).y - scale.y / 2;
+	float maxY = (position * vector4(centroid, 1.0f)).y + scale.y / 2;
 
 	if(point.x > minX &&
 		point.x < maxX &&

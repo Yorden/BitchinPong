@@ -8,6 +8,7 @@ using namespace std;
 
 class QuadTree
 {
+public:
 	vector<vector<GameObject*>> groups; // List containing groups of gameobjects
 	int minNumObjects; // Minimum number of gameobjects per quad
 
@@ -15,14 +16,24 @@ class QuadTree
 		matrix4 position;
 		vector3 scale;
 
-		Square(matrix4 p, vector3 s) {
+		Square() {};
 
+		Square(matrix4 p, vector3 s) {
+			position = p;
+			scale = s;
+		}
+
+		void Draw() {
+			MeshManagerSingleton* meshManager = MeshManagerSingleton::GetInstance();
+			meshManager->AddCubeToQueue(position * glm::scale(scale), MERED, MERENDER::WIRE);
 		}
 	};
 
-	vector<vector<Square>> squares; // Used to draw quadtree to screen
+	vector<Square*> squares; // Used to draw quadtree to screen
 
-public:
+	Square* drawTest;
+
+
 	/* Constructor */
 	QuadTree();
 
@@ -35,11 +46,15 @@ public:
 
 	/* GetSquares */
 	/* Returns list containing list of squares in quadtree */
-	vector<vector<Square>> GetSquares();
+	vector<Square*> GetSquares();
 
 	/* GenerateQuadTree */
 	/* Generates quadtree from gameobjects in game */
 	void GenerateQuadTree(vector<GameObject*> gameObjects, matrix4 pos, vector3 scale);
+
+	/* DrawTree */
+	/* Draws QuadTree to screen */
+	void DrawTree();
 };
 #endif
 

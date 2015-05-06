@@ -17,14 +17,16 @@ Ball::~Ball() {
 /* Init */
 void Ball::Init() {
 	GameObject::Init();
-	meshManager->LoadModelUnthreaded("Minecraft\\CubePrimitive.obj", name, position);
-	boundingBox->GenerateBoundingBox();
+	meshManager->LoadModelUnthreaded("Minecraft\\SpherePrimitive.obj", name, position);
+	boundingBox->GenerateBoundingBox_Model();
+	boundingBox->scale *= 0.3f;
 }
 
 /* Update */
 void Ball::Update() {
 	GameObject::Update();
 	InBounds();
+	meshManager->SetModelMatrix(position * glm::scale(vector3(0.3f)), name);
 }
 
 /* Draw */
@@ -115,7 +117,7 @@ bool Ball::InBounds(){
 	}
 
 	//Y Value: Will bounce by reversing y value of the velocity
-	if(position[3][1] > 3.5 || position[3][1] < -5.5) {
+	if(position[3][1] > 5.0f || position[3][1] < -5.0f) {
 		velocity.y *= -1;
 		return true;
 	}

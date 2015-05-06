@@ -6,13 +6,15 @@
 #include "Ball.h"
 #include "Bomb.h"
 #include "BoundingBox.h"
+#include "QuadTree.h"
 
 class CollisionManager
 {
+public:
 	static CollisionManager* instance;
+	QuadTree* quadTree;
 	vector3 boundsScale;
 
-public:
 	/* Constructor */
 	CollisionManager();
 
@@ -30,6 +32,10 @@ public:
 	/* RenderBoxes */
 	/* Draws cubes around models representing visualization of bounding box */
 	void RenderBoxes(std::vector<GameObject*> gameObjects);
+
+	/* RenderQuadTree */
+	/* Draws QuadTree to screen */
+	void RenderQuadTree();
 
 	/* IdentifyBox */
 	/* Returns index of box specified by name, else -1 if the box doesn't exist */

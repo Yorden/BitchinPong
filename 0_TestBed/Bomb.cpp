@@ -17,9 +17,10 @@ Bomb::~Bomb(void)
 
 void Bomb::Init() {
 	GameObject::Init();
-	meshManager->LoadModelUnthreaded("Minecraft\\CubePrimitive.obj", name, position * glm::scale(vector3(3.0f)));
-	boundingBox->GenerateBoundingBox();
-	boundingBox->scale *= 3.0f;
+	meshManager->LoadModelUnthreaded("Minecraft\\Bomb.obj", name, position);
+	meshManager->SetModelMatrix(position * glm::scale(vector3(0.5f)), name);
+	boundingBox->GenerateBoundingBox_Model();
+	boundingBox->scale *= 0.5f;
 }
 
 /* Update */

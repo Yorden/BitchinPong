@@ -48,9 +48,13 @@ public:
 	/* Sets position of box in global space */
 	void SetPosition(matrix4 pos);
 
-	/* GenerateBoundingBox */
-	/* Creates collision rectangle around specified model */
-	void GenerateBoundingBox();
+	/* GenerateBoundingBox_Model */
+	/* Creates collision box around specified model */
+	void GenerateBoundingBox_Model();
+
+	/* GenerateBoundingBox_Manual */
+	/* Creates collision box at specified location with specified scale */
+	void GenerateBoundingBox_Manual(matrix4 pos, vector3 s);
 
 	/* Contains */
 	/* Returns true if the box contains the point specified */

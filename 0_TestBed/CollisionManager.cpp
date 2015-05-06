@@ -4,7 +4,8 @@ CollisionManager* CollisionManager::instance = nullptr;
 
 /* Constructor */
 CollisionManager::CollisionManager(){
-	boundsScale = vector3(10.0f, 5.5f, 0.1f);
+	boundsScale = vector3(20.0f, 10.0f, 0.1f);
+	quadTree = new QuadTree();
 }
 
 /* Destructor */
@@ -31,6 +32,7 @@ void CollisionManager::Update(Player& player1, Player& player2, Ball& ball1, Bal
 	PlayerCollision(player2, ball2);
 
 	BallBallCollision(ball1, ball2);
+	BallBallCollision(ball2, ball1);
 }
 
 /* RenderBoxes */
@@ -40,6 +42,11 @@ void CollisionManager::RenderBoxes(std::vector<GameObject*> gameObjects) {
 
 		g->boundingBox->AddToRenderList();
 	}
+}
+
+/* RenderQuadTree */
+void CollisionManager::RenderQuadTree() {
+	quadTree->DrawTree();
 }
 
 /* BallCollision */
@@ -69,5 +76,5 @@ bool CollisionManager::BombCollision(Ball& ball, std::vector<Bomb*>& bombs) {
 /* DrawBounds */
 void CollisionManager::DrawBounds() {
 	MeshManagerSingleton* meshManager = MeshManagerSingleton::GetInstance();
-	meshManager->AddCubeToQueue(matrix4(IDENTITY) * glm::scale(boundsScale * 2.0f), MERED, MERENDER::WIRE);
+	meshManager->AddCubeToQueue(matrix4(IDENTITY) * glm::scale(boundsScale), MERED, MERENDER::WIRE);
 }

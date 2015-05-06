@@ -112,12 +112,7 @@ void GameManager::Run () {
 			Update();
 			Display();
 		}
-		Idle();
 	}
-}
-
-void GameManager::Idle () {
-	m_bFPC = true; //Enable the First Person Camera
 }
 
 void GameManager::Update () {
@@ -129,6 +124,9 @@ void GameManager::Update () {
 	ball2->Update();
 
 	collisionManager->Update(*player1, *player2, *ball1, *ball2, gameObjects, bombSpawnManager->bombs);
+
+	collisionManager->quadTree->squares.clear();
+	collisionManager->quadTree->GenerateQuadTree(gameObjects, matrix4(IDENTITY), vector3(20.0f, 10.0f, 0.1f));
 
 	//Update the mesh information
 	meshManagerSingleton->Update();
@@ -144,6 +142,7 @@ void GameManager::Display (void) {
 	ball1->Draw();
 	ball2->Draw();
 	collisionManager->RenderBoxes(gameObjects);
+	collisionManager->RenderQuadTree();
 	collisionManager->DrawBounds();
 	bombSpawnManager->DrawBombs();
 
@@ -249,12 +248,19 @@ void GameManager::InitGameObjects() {
 	bombSpawnManager->SpawnBomb(gameObjects);
 	bombSpawnManager->SpawnBomb(gameObjects);
 	bombSpawnManager->SpawnBomb(gameObjects);
+	bombSpawnManager->SpawnBomb(gameObjects);
+	bombSpawnManager->SpawnBomb(gameObjects);
+	bombSpawnManager->SpawnBomb(gameObjects);
+	bombSpawnManager->SpawnBomb(gameObjects);
+	bombSpawnManager->SpawnBomb(gameObjects);
+	bombSpawnManager->SpawnBomb(gameObjects);
+	bombSpawnManager->SpawnBomb(gameObjects);
+	bombSpawnManager->SpawnBomb(gameObjects);
+	bombSpawnManager->SpawnBomb(gameObjects);
+	bombSpawnManager->SpawnBomb(gameObjects);
 }
 
 void GameManager::InitInternalAppVariables() {
-	// The camera rotation and the arcball are not being used by default
-	m_bFPC = false;
-	m_bArcBall = false;
 	
 	// Set the properties for the light in the scene
 	lightManagerSingleton->SetPosition( glm::vec3( 0, 0, 10) );
