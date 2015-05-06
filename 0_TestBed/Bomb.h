@@ -40,6 +40,8 @@ public:
 
 	bool InBounds();
 
+	void Explode(std::vector<Ball*> ballList, Player* player1, Player* player2);
+
 	vector3 getCenterPoint(String targetMatName);
 };
 #endif

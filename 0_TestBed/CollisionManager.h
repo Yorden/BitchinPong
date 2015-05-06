@@ -29,7 +29,7 @@ public:
 
 	/* Update */
 	/* Updates CollisionManager */
-	void Update(Player& player, Player& player2, Ball& ball1, Ball& ball2, std::vector<GameObject*> gameObjects, std::vector<Bomb*> bombs);
+	void Update(Player& player, Player& player2, std::vector<Ball*> ballList, std::vector<GameObject*> gameObjects, std::vector<Bomb*> bombs);
 
 	/* RenderBoxes */
 	/* Draws cubes around models representing visualization of bounding box */
