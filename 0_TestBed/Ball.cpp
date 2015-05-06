@@ -19,14 +19,13 @@ void Ball::Init() {
 	GameObject::Init();
 	meshManager->LoadModelUnthreaded("Minecraft\\SpherePrimitive.obj", name, position);
 	boundingBox->GenerateBoundingBox_Model();
-	boundingBox->scale *= 0.3f;
 }
 
 /* Update */
 void Ball::Update() {
 	GameObject::Update();
 	InBounds();
-	meshManager->SetModelMatrix(position * glm::scale(vector3(0.3f)), name);
+	meshManager->SetModelMatrix(position, name);
 }
 
 /* Draw */

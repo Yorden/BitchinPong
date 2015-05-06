@@ -48,6 +48,10 @@ public:
 	/* Returns list containing list of squares in quadtree */
 	vector<Square*> GetSquares();
 
+	/* GenerateGroups */
+	/* Generates quadtree and returns list of groups */
+	vector<vector<GameObject*>> GenerateGroups(vector<GameObject*> gameObjects, matrix4 pos, vector3 scale);
+
 	/* GenerateQuadTree */
 	/* Generates quadtree from gameobjects in game */
 	void GenerateQuadTree(vector<GameObject*> gameObjects, matrix4 pos, vector3 scale);

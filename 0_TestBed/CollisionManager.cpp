@@ -33,6 +33,9 @@ void CollisionManager::Update(Player& player1, Player& player2, Ball& ball1, Bal
 
 	BallBallCollision(ball1, ball2);
 	BallBallCollision(ball2, ball1);
+
+	groups.clear();
+	groups = quadTree->GenerateGroups(gameObjects, matrix4(IDENTITY), vector3(20.0f, 10.0f, 0.0f));
 }
 
 /* RenderBoxes */
