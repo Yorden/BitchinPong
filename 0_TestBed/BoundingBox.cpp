@@ -16,7 +16,8 @@ BoundingBox::BoundingBox(String n, matrix4 pos) {
 }
 
 /* Destructor */
-BoundingBox::~BoundingBox() {
+BoundingBox::~BoundingBox() 
+{
 }
 
 /* GetName */

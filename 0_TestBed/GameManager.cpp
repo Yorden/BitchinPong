@@ -10,6 +10,7 @@
 
 /* Instance of the application */
 GameManager* GameManager::instance = nullptr;
+std::vector<Ball*> ballVect;
 
 /* Constructor */
 GameManager::GameManager() {
@@ -21,13 +22,10 @@ GameManager::GameManager() {
 	collisionManager  = CollisionManager::GetInstance();
 	bombSpawnManager = BombSpawnManager::GetInstance();
 
-	std::vector<Ball*> ballVect;
 	player1 = new Player("Player1", glm::translate(vector3(-16.0f, 0.0f, 0.0f)));
 	player2 = new Player("Player2", glm::translate(vector3(16.0f, 0.0f, 0.0f)));
 	ball1 = new Ball("Ball1", matrix4(IDENTITY), vector3(0.05, 0, 0), player1, player2);
 	ball2 = new Ball("Ball2", matrix4(IDENTITY), vector3(-0.05, 0, 0), player1, player2);
-
-	
 
 	gameObjects.push_back(player1);
 	gameObjects.push_back(player2);
@@ -126,8 +124,12 @@ void GameManager::Update () {
 
 	player1->Update();
 	player2->Update();
-	ball1->Update();
-	ball2->Update();
+	for(int i = 0; i < ballVect.size(); i++)
+	{
+		ballVect[i]->Update();
+	}
+	//ball1->Update();
+	//ball2->Update();
 
 	collisionManager->Update(*player1, *player2, *ball1, *ball2, gameObjects, bombSpawnManager->bombs);
 
@@ -135,22 +137,22 @@ void GameManager::Update () {
 	{
 		if(collisionManager->BombCollision(*ball1, bombSpawnManager->bombs[i]))
 		{
-			//String name = "ball" + std::to_string(ballVect.size());
+			bombSpawnManager->bombs[i]->boundingBox->~BoundingBox();
+			bombSpawnManager->bombs[i]->~Bomb();			
 
-			//float randX = (rand() % 38);
-			//randX -= 20;
+			String name = "ball" + std::to_string(ballVect.size());
 
-			//float randY = (rand() % 18);
-			//randY -= 10;
+			float randX = (rand() % 38);
+			randX -= 20;
+
+			float randY = (rand() % 18);
+			randY -= 10;
 	
-			//Ball* b = new Ball(name, matrix4(IDENTITY) * glm::translate(vector3(randX, randY, 0.0f)), player1, player2);
-			//b->Init();
+			Ball* ball = new Ball(name, matrix4(IDENTITY), vector3(randX, randY, 0), player1, player2);
+			ball->Init();
 
-			//ballVect.push_back(b);
-			//gameObjects.push_back(b);
-
-			bombSpawnManager->bombs[i]->~Bomb();
-			//bombSpawnManager->bombs[i]->boundingBox->~BoundingBox();
+			ballVect.push_back(ball);
+			gameObjects.push_back(ball);			
 		}
 	}
 
@@ -165,8 +167,13 @@ void GameManager::Display (void) {
 
 	player1->Draw();
 	player2->Draw();
-	ball1->Draw();
-	ball2->Draw();
+
+	for(int i = 0; i < ballVect.size(); i++)
+	{
+		ballVect[i]->Draw();
+	}
+	//ball1->Draw();
+	//ball2->Draw();
 	collisionManager->RenderBoxes(gameObjects);
 	collisionManager->RenderQuadTree();
 	collisionManager->DrawBounds();
@@ -265,8 +272,13 @@ void GameManager::Init( HINSTANCE hInstance, LPWSTR lpCmdLine, int nCmdShow)
 void GameManager::InitGameObjects() {
 	player1->Init();
 	player2->Init();
-	ball1->Init();
-	ball2->Init();
+
+	for(int i = 0; i < ballVect.size(); i++)
+	{
+		ballVect[i]->Init();
+	}
+	//ball1->Init();
+	//ball2->Init();
 	meshManagerSingleton->Update();
 
 	bombSpawnManager->SpawnBomb(gameObjects);
