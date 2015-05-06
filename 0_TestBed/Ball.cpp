@@ -20,7 +20,7 @@ Ball::~Ball() {
 /* Init */
 void Ball::Init() {
 	GameObject::Init();
-	meshManager->LoadModelUnthreaded("Minecraft\\SpherePrimitive.obj", name, position);
+	meshManager->LoadModelUnthreaded("Minecraft\\Ball.obj", name, position);
 	boundingBox->GenerateBoundingBox_Model();
 }
 

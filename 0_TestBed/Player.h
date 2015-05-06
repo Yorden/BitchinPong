@@ -24,10 +24,6 @@ public:
 	/* Initializes Player */
 	void Init();
 
-	/* GetPosition */
-	/* Override of GameObject's get position because Player position not located at centroid of model */
-	matrix4 GetPosition();
-
 	/* LoseHealth */
 	/* Decrements players health */
 	void LoseHealth(float damage);

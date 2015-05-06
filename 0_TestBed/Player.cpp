@@ -7,7 +7,7 @@
 
 /* Constructor */
 Player::Player(String n, matrix4 pos) : 
-	GameObject(n, pos, vector3(0), 0.1f, 0.005f) {
+	GameObject(n, pos, vector3(0), 0.5f, 0.01f) {
 
 		health = 100;
 		totalHealth = 100;
@@ -20,15 +20,9 @@ Player::~Player() {
 /* Init */
 void Player::Init() {
 	GameObject::Init();
-	meshManager->LoadModelUnthreaded("Minecraft\\MC_Creeper.obj", name, position);
+	meshManager->LoadModelUnthreaded("Minecraft\\Player.obj", name, position);
 	boundingBox->GenerateBoundingBox_Model();
-	position *= glm::translate(-boundingBox->GetScale()/2.0f);
 	boundingBox->SetPosition(position);
-}
-
-/* GetPosition */
-matrix4 Player::GetPosition() {
-	return position * glm::translate(boundingBox->GetCentroid());
 }
 
 /* LoseHealth */
@@ -64,16 +58,16 @@ void Player::MovePlayer(int dir) {
 /* InBounds */
 bool Player::InBounds() 
 {
-	float minY = position[3].y + boundingBox->GetCentroid().y - boundingBox->GetScale().y/2;
-	float maxY = position[3].y + boundingBox->GetCentroid().y + boundingBox->GetScale().y/2;
+	float minY = position[3].y - boundingBox->GetScale().y/2;
+	float maxY = position[3].y + boundingBox->GetScale().y/2;
 
 	//2.0 -6
 	if(maxY > 10) {
-		position[3][1] = 10 - boundingBox->GetScale().y;
+		position[3][1] = 10 - boundingBox->GetScale().y/2;
 		return false;
 	}
 	else if(minY < -10) {
-		position[3][1] = -10;
+		position[3][1] = - 10 + boundingBox->GetScale().y/2;
 		return false;
 	}
 

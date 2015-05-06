@@ -27,6 +27,8 @@ GameManager::GameManager() {
 	ball1 = new Ball("Ball1", matrix4(IDENTITY), vector3(0.05, 0, 0), player1, player2);
 	ball2 = new Ball("Ball2", matrix4(IDENTITY), vector3(-0.05, 0, 0), player1, player2);
 
+	
+
 	gameObjects.push_back(player1);
 	gameObjects.push_back(player2);
 	gameObjects.push_back(ball1);
