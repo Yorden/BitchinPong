@@ -82,7 +82,14 @@ bool Player::InBounds()
 
 /* DrawHealthBar */
 void Player::DrawHealthBar(float xPos) {
-	MeshManagerSingleton* meshManager = MeshManagerSingleton::GetInstance();
+	if(health > 0)
+	{
+		MeshManagerSingleton* meshManager = MeshManagerSingleton::GetInstance();
 
-	meshManager->AddCubeToQueue(matrix4(IDENTITY) * glm::translate(vector3(xPos, 0.0f, 0.0f)) * glm::scale(vector3(1.0f, 20.0f * (health/totalHealth), 0.5f)), MEGREEN, MERENDER::SOLID);
+		meshManager->AddCubeToQueue(matrix4(IDENTITY) * glm::translate(vector3(xPos, 0.0f, 0.0f)) * glm::scale(vector3(1.0f, 20.0f * (health/totalHealth), 0.5f)), MEGREEN, MERENDER::SOLID);
+	}
+	else
+	{
+		health = 0;
+	}
 }

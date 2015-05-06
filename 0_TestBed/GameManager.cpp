@@ -21,6 +21,7 @@ GameManager::GameManager() {
 	collisionManager  = CollisionManager::GetInstance();
 	bombSpawnManager = BombSpawnManager::GetInstance();
 
+	std::vector<Ball*> ballVect;
 	player1 = new Player("Player1", glm::translate(vector3(-16.0f, 0.0f, 0.0f)));
 	player2 = new Player("Player2", glm::translate(vector3(16.0f, 0.0f, 0.0f)));
 	ball1 = new Ball("Ball1", matrix4(IDENTITY), vector3(0.05, 0, 0), player1, player2);
@@ -30,6 +31,9 @@ GameManager::GameManager() {
 	gameObjects.push_back(player2);
 	gameObjects.push_back(ball1);
 	gameObjects.push_back(ball2);
+
+	ballVect.push_back(ball1);
+	ballVect.push_back(ball2);
 }
 
 /* Copy Constructor */
@@ -125,6 +129,15 @@ void GameManager::Update () {
 
 	collisionManager->Update(*player1, *player2, *ball1, *ball2, gameObjects, bombSpawnManager->bombs);
 
+	for(int i = 0; i < bombSpawnManager->bombs.size(); i++)
+	{
+		if(collisionManager->BombCollision(*ball1, bombSpawnManager->bombs[i]))
+		{
+			bombSpawnManager->bombs[i]->~Bomb();
+			//bombSpawnManager->bombs[i]->boundingBox->~BoundingBox();
+		}
+	}
+
 	//Update the mesh information
 	meshManagerSingleton->Update();
 }
@@ -142,8 +155,7 @@ void GameManager::Display (void) {
 	collisionManager->RenderQuadTree();
 	collisionManager->DrawBounds();
 	bombSpawnManager->DrawBombs();
-
-
+	
 	meshManagerSingleton->Render();
 
 	openGLSingleton->GLSwapBuffers(); //Swaps the OpenGL buffers

@@ -28,6 +28,7 @@ class GameManager
 	Player* player2;
 	Ball* ball1;
 	Ball* ball2;
+	
 
 	// Singletons
 	static GameManager* instance; // GameManager singleton

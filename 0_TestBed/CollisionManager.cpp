@@ -32,7 +32,6 @@ void CollisionManager::Update(Player& player1, Player& player2, Ball& ball1, Bal
 	PlayerCollision(player2, ball2);
 
 	BallBallCollision(ball1, ball2);
-	BallBallCollision(ball2, ball1);
 
 	groups.clear();
 	groups = quadTree->GenerateGroups(gameObjects, matrix4(IDENTITY), vector3(36.0f, 20.0f, 0.0f));
@@ -72,7 +71,12 @@ bool CollisionManager::BallBallCollision(Ball& ball1, Ball& ball2) {
 }
 
 /* BombCollisions */
-bool CollisionManager::BombCollision(Ball& ball, std::vector<Bomb*>& bombs) {
+//bool CollisionManager::BombCollision(Ball& ball, std::vector<Bomb*>& bombs) {
+bool CollisionManager::BombCollision(Ball& ball, Bomb* bomb) {	
+	if (ball.boundingBox->CollidesWith(*bomb->boundingBox))
+	{
+		return true;
+	}
 	return false;
 }
 

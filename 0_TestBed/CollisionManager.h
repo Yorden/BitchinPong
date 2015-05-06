@@ -53,7 +53,8 @@ public:
 
 	/* BombCollision */
 	/* Checks for collisions between the ball and bombs */
-	bool BombCollision(Ball& ball, std::vector<Bomb*>& bombs);
+	//bool BombCollision(Ball& ball, std::vector<Bomb*>& bombs);
+	bool BombCollision(Ball& ball, Bomb* bombs);
 
 	/* DrawBounds */
 	/* Draws square representing the bounds of the playing area */
