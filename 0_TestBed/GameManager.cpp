@@ -77,7 +77,6 @@ void GameManager::ReleaseInstance() {
 }
 
 void GameManager::Release() {
-	SafeDelete(grid);
 	SafeDelete(window);
 
 	// Release all the singletons used in the dll
@@ -138,7 +137,7 @@ void GameManager::Update () {
 		if(collisionManager->BombCollision(*ball1, bombSpawnManager->bombs[i]))
 		{
 			bombSpawnManager->bombs[i]->boundingBox->~BoundingBox();
-			bombSpawnManager->bombs[i]->~Bomb();			
+			bombSpawnManager->bombs.erase(bombSpawnManager->bombs.begin() + i);			
 
 			String name = "ball" + std::to_string(ballVect.size());
 
@@ -163,22 +162,17 @@ void GameManager::Update () {
 void GameManager::Display (void) {
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // clear the window
 
-	grid->Render(100.0f); //renders the grid with a 100 scale
-
 	player1->Draw();
 	player2->Draw();
 
-	for(int i = 0; i < ballVect.size(); i++)
-	{
+	for(int i = 0; i < ballVect.size(); i++){
 		ballVect[i]->Draw();
 	}
-	//ball1->Draw();
-	//ball2->Draw();
-	collisionManager->RenderBoxes(gameObjects);
-	collisionManager->RenderQuadTree();
-	collisionManager->DrawBounds();
+
+	collisionManager->Draw(gameObjects);
 	bombSpawnManager->DrawBombs();
-	
+
+	meshManagerSingleton->AddInstanceToRenderList("BattleArena");
 	meshManagerSingleton->Render();
 
 	openGLSingleton->GLSwapBuffers(); //Swaps the OpenGL buffers
@@ -270,6 +264,8 @@ void GameManager::Init( HINSTANCE hInstance, LPWSTR lpCmdLine, int nCmdShow)
 }
 
 void GameManager::InitGameObjects() {
+	meshManagerSingleton->LoadModelUnthreaded("Minecraft\\BattleArena.obj", "BattleArena", glm::rotate(matrix4(IDENTITY), 90.0f, vector3(1.0f, 0, 0)) * glm::rotate(matrix4(IDENTITY), 90.0f, vector3(0, 1.0f, 0)) * glm::translate(vector3(0, -2.0f, 0)) * glm::scale(vector3(1.45f, 1.0f, 1.75f)));
+
 	player1->Init();
 	player2->Init();
 
@@ -305,8 +301,4 @@ void GameManager::InitInternalAppVariables() {
 	lightManagerSingleton->SetColor( glm::vec3( 1, 1, 1) );
 	lightManagerSingleton->SetIntensity ( 5.0f ); //Rotating Light
 	lightManagerSingleton->SetIntensity ( 0.75f, 0 ); //Ambient light (Ambient Light is always the first light, or light[0])
-
-	// Create a new grid initializing its properties and compiling it
-	grid = new GridClass(MEAXIS::XY);
-	grid->CompileGrid();
 }

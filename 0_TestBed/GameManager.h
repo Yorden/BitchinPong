@@ -39,7 +39,6 @@ class GameManager
 	LightManagerSingleton* lightManagerSingleton; // Light manager singleton
 	MeshManagerSingleton* meshManagerSingleton; // Mesh manager singleton
 	BombSpawnManager* bombSpawnManager; // Bomb manager singleton
-	GridClass* grid; // Grid that represents coordinate system
 	WindowClass* window; // Window class
 
 public:

@@ -37,6 +37,13 @@ void CollisionManager::Update(Player& player1, Player& player2, Ball& ball1, Bal
 	groups = quadTree->GenerateGroups(gameObjects, matrix4(IDENTITY), vector3(36.0f, 20.0f, 0.0f));
 }
 
+/* Draw */
+void CollisionManager::Draw(std::vector<GameObject*> gameObjects) {
+	RenderBoxes(gameObjects);
+	quadTree->DrawTree();
+	DrawBounds();
+}
+
 /* RenderBoxes */
 void CollisionManager::RenderBoxes(std::vector<GameObject*> gameObjects) {
 	for(int i = 0; i < gameObjects.size(); i++) {
@@ -44,11 +51,6 @@ void CollisionManager::RenderBoxes(std::vector<GameObject*> gameObjects) {
 
 		g->boundingBox->AddToRenderList();
 	}
-}
-
-/* RenderQuadTree */
-void CollisionManager::RenderQuadTree() {
-	quadTree->DrawTree();
 }
 
 /* BallCollision */

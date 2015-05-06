@@ -31,13 +31,13 @@ public:
 	/* Updates CollisionManager */
 	void Update(Player& player, Player& player2, Ball& ball1, Ball& ball2, std::vector<GameObject*> gameObjects, std::vector<Bomb*> bombs);
 
+	/* Draw */
+	/* Draws quad tree, gameobject bounding boxes, and the bounds of the arena */
+	void Draw(std::vector<GameObject*> gameObjects);
+
 	/* RenderBoxes */
 	/* Draws cubes around models representing visualization of bounding box */
 	void RenderBoxes(std::vector<GameObject*> gameObjects);
-
-	/* RenderQuadTree */
-	/* Draws QuadTree to screen */
-	void RenderQuadTree();
 
 	/* IdentifyBox */
 	/* Returns index of box specified by name, else -1 if the box doesn't exist */
