@@ -24,14 +24,23 @@ CollisionManager* CollisionManager::GetInstance() {
 }
 
 /* Update */
-void CollisionManager::Update(Player& player1, Player& player2, Ball& ball1, Ball& ball2, std::vector<GameObject*> gameObjects, std::vector<Bomb*> bombs) {
-	PlayerCollision(player1, ball1);
-	PlayerCollision(player2, ball1);
+void CollisionManager::Update(Player& player1, Player& player2,  std::vector<Ball*> ballList, std::vector<GameObject*> gameObjects, std::vector<Bomb*> bombs) {
+	
+	int ballListSize = ballList.size();
+	for(int i = 0; i < ballListSize; i++){
+		for(int j = i+1; j < ballListSize; j++){
+			BallBallCollision(*ballList[i] , *ballList[j]);
+		}
+	}
 
-	PlayerCollision(player1, ball2);
-	PlayerCollision(player2, ball2);
+	for(int i = 0; i < ballListSize; i++){
+		PlayerCollision(player1, *ballList[i]);
+		PlayerCollision(player2, *ballList[i]);
+	}
 
-	BallBallCollision(ball1, ball2);
+
+
+	
 
 	groups.clear();
 	groups = quadTree->GenerateGroups(gameObjects, matrix4(IDENTITY), vector3(36.0f, 20.0f, 0.0f));

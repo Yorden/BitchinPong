@@ -127,15 +127,17 @@ void GameManager::Update () {
 	{
 		ballVect[i]->Update();
 	}
-	//ball1->Update();
-	//ball2->Update();
 
-	collisionManager->Update(*player1, *player2, *ball1, *ball2, gameObjects, bombSpawnManager->bombs);
-
-	for(int i = 0; i < bombSpawnManager->bombs.size(); i++)
+	collisionManager->Update(*player1, *player2, ballVect, gameObjects, bombSpawnManager->bombs);
+	//gets the sizes of the ball and bomb vectors
+	int bombVecSize = bombSpawnManager->bombs.size();
+	int ballVecSize = ballVect.size();
+	//nested for loops check every bomb and ball in the scene
+	for(int i = 0; i < bombVecSize; i++)
 	{
-		if(collisionManager->BombCollision(*ball1, bombSpawnManager->bombs[i]))
+		for(int j = i+1; j < ballVecSize; j++)
 		{
+<<<<<<< HEAD
 			bombSpawnManager->bombs[i]->boundingBox->~BoundingBox();
 			bombSpawnManager->bombs.erase(bombSpawnManager->bombs.begin() + i);			
 
@@ -152,9 +154,15 @@ void GameManager::Update () {
 
 			ballVect.push_back(ball);
 			gameObjects.push_back(ball);			
+=======
+			if(collisionManager->BombCollision(*ballVect[j], bombSpawnManager->bombs[i]))
+			{
+				bombSpawnManager->bombs[i]->Explode(ballVect);
+			}
+>>>>>>> b119bef159faa8e281ccdc34136deb503f29880e
 		}
 	}
-
+	
 	//Update the mesh information
 	meshManagerSingleton->Update();
 }
@@ -169,7 +177,13 @@ void GameManager::Display (void) {
 		ballVect[i]->Draw();
 	}
 
+<<<<<<< HEAD
 	collisionManager->Draw(gameObjects);
+=======
+	collisionManager->RenderBoxes(gameObjects);
+	collisionManager->RenderQuadTree();
+	collisionManager->DrawBounds();
+>>>>>>> b119bef159faa8e281ccdc34136deb503f29880e
 	bombSpawnManager->DrawBombs();
 
 	meshManagerSingleton->AddInstanceToRenderList("BattleArena");
