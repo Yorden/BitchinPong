@@ -17,10 +17,15 @@ Player::~Player() {
 /* Init */
 void Player::Init() {
 	GameObject::Init();
-	meshManager->LoadModelUnthreaded("Minecraft\\MC_Creeper.obj", name, position);
+	meshManager->LoadModelUnthreaded("Minecraft\\Paddle.obj", name, position);
 	boundingBox->GenerateBoundingBox_Model();
 	position *= glm::translate(-boundingBox->GetScale()/2.0f);
 	boundingBox->SetPosition(position);
+}
+
+/* GetPosition */
+matrix4 Player::GetPosition() {
+	return position * glm::translate(boundingBox->GetCentroid());
 }
 
 /* Update */
@@ -53,12 +58,12 @@ bool Player::InBounds()
 	float maxY = position[3].y + boundingBox->GetCentroid().y + boundingBox->GetScale().y/2;
 
 	//2.0 -6
-	if(maxY > 5.5f) {
-		position[3][1] = 5.5f - boundingBox->GetScale().y;
+	if(maxY > 5) {
+		position[3][1] = 5 - boundingBox->GetScale().y;
 		return false;
 	}
-	else if(minY < -5.5f) {
-		position[3][1] = -5.5f;
+	else if(minY < -5) {
+		position[3][1] = -5;
 		return false;
 	}
 

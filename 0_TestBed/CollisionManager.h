@@ -2,9 +2,10 @@
 #define COLLISION_MANAGER
 
 #include "ME\MyEngine.h";
+#include "GameObject.h"
 #include "Player.h"
-#include "Ball.h"
 #include "Bomb.h"
+#include "Ball.h"
 #include "BoundingBox.h"
 #include "QuadTree.h"
 
@@ -14,6 +15,7 @@ public:
 	static CollisionManager* instance;
 	QuadTree* quadTree;
 	vector3 boundsScale;
+	std::vector<std::vector<GameObject*>> groups;
 
 	/* Constructor */
 	CollisionManager();

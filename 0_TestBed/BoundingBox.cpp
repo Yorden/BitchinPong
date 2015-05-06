@@ -95,10 +95,10 @@ bool BoundingBox::Contains(vector3 point) {
 	float minY = (position * vector4(centroid, 1.0f)).y - scale.y / 2;
 	float maxY = (position * vector4(centroid, 1.0f)).y + scale.y / 2;
 
-	if(point.x > minX &&
-		point.x < maxX &&
-		point.y > minY && 
-		point.y < maxY) {
+	if(point.x >= minX &&
+		point.x <= maxX &&
+		point.y >= minY && 
+		point.y <= maxY) {
 			return true;
 	}
 

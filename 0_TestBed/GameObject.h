@@ -33,7 +33,7 @@ public:
 
 	/* GetPosition */
 	/* Returns position of GameObject in global space */
-	matrix4 GetPosition();
+	virtual matrix4 GetPosition();
 
 	/* SetPosition */
 	/* Sets position of GameObject in global space */

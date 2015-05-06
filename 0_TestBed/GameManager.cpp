@@ -125,9 +125,6 @@ void GameManager::Update () {
 
 	collisionManager->Update(*player1, *player2, *ball1, *ball2, gameObjects, bombSpawnManager->bombs);
 
-	collisionManager->quadTree->squares.clear();
-	collisionManager->quadTree->GenerateQuadTree(gameObjects, matrix4(IDENTITY), vector3(20.0f, 10.0f, 0.1f));
-
 	//Update the mesh information
 	meshManagerSingleton->Update();
 }
@@ -141,7 +138,7 @@ void GameManager::Display (void) {
 	player2->Draw();
 	ball1->Draw();
 	ball2->Draw();
-	collisionManager->RenderBoxes(gameObjects);
+	//collisionManager->RenderBoxes(gameObjects);
 	collisionManager->RenderQuadTree();
 	collisionManager->DrawBounds();
 	bombSpawnManager->DrawBombs();

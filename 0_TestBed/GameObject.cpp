@@ -56,6 +56,7 @@ void GameObject::Update() {
 	}
 
 	meshManager->SetModelMatrix(position, name);
+	boundingBox->GenerateBoundingBox_Model();
 	boundingBox->SetPosition(position);
 }
 
