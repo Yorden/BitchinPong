@@ -4,7 +4,7 @@ CollisionManager* CollisionManager::instance = nullptr;
 
 /* Constructor */
 CollisionManager::CollisionManager(){
-	boundsScale = vector3(20.0f, 10.0f, 0.1f);
+	boundsScale = vector3(36.0f, 20.0f, 0.1f);
 	quadTree = new QuadTree();
 }
 
@@ -35,7 +35,7 @@ void CollisionManager::Update(Player& player1, Player& player2, Ball& ball1, Bal
 	BallBallCollision(ball2, ball1);
 
 	groups.clear();
-	groups = quadTree->GenerateGroups(gameObjects, matrix4(IDENTITY), vector3(20.0f, 10.0f, 0.0f));
+	groups = quadTree->GenerateGroups(gameObjects, matrix4(IDENTITY), vector3(36.0f, 20.0f, 0.0f));
 }
 
 /* RenderBoxes */

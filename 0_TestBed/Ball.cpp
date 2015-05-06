@@ -6,8 +6,11 @@
 #include "Ball.h"
 
 /* Constructor */
-Ball::Ball(String ballName, matrix4 pos, vector3 vel) :
+Ball::Ball(String ballName, matrix4 pos, vector3 vel, Player* p1, Player* p2) :
 	GameObject(ballName, pos, vel, 0.5, 0.1) {
+
+		player1 = p1;
+		player2 = p2;
 }
 
 /* Destructor */
@@ -101,7 +104,10 @@ bool Ball::InBounds(){
 	randSpawnY -= 3;
 
 	//X Value: Will move back into center position 
-	if(position[3][0] > 10 || position[3][0] < -10) {
+	if(position[3][0] > 18 || position[3][0] < -18) {
+		if(position[3].x < 0) player1->LoseHealth(5);
+		else player2->LoseHealth(5);
+
 		if(randXDirect == 0)
 		{
 			velocity = vector3(0.05,randYDirect,0);
@@ -116,7 +122,7 @@ bool Ball::InBounds(){
 	}
 
 	//Y Value: Will bounce by reversing y value of the velocity
-	if(position[3][1] > 5.0f || position[3][1] < -5.0f) {
+	if(position[3][1] > 10.0f || position[3][1] < -10.0f) {
 		velocity.y *= -1;
 		return true;
 	}

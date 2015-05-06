@@ -21,10 +21,10 @@ GameManager::GameManager() {
 	collisionManager  = CollisionManager::GetInstance();
 	bombSpawnManager = BombSpawnManager::GetInstance();
 
-	player1 = new Player("Player1", glm::translate(vector3(-8.0f, 0.0f, 0.0f)));
-	player2 = new Player("Player2", glm::translate(vector3(8.0f, 0.0f, 0.0f)));
-	ball1 = new Ball("Ball1", matrix4(IDENTITY), vector3(0.05, 0, 0));
-	ball2 = new Ball("Ball2", matrix4(IDENTITY), vector3(-0.05, 0, 0));
+	player1 = new Player("Player1", glm::translate(vector3(-16.0f, 0.0f, 0.0f)));
+	player2 = new Player("Player2", glm::translate(vector3(16.0f, 0.0f, 0.0f)));
+	ball1 = new Ball("Ball1", matrix4(IDENTITY), vector3(0.05, 0, 0), player1, player2);
+	ball2 = new Ball("Ball2", matrix4(IDENTITY), vector3(-0.05, 0, 0), player1, player2);
 
 	gameObjects.push_back(player1);
 	gameObjects.push_back(player2);
@@ -138,10 +138,11 @@ void GameManager::Display (void) {
 	player2->Draw();
 	ball1->Draw();
 	ball2->Draw();
-	//collisionManager->RenderBoxes(gameObjects);
+	collisionManager->RenderBoxes(gameObjects);
 	collisionManager->RenderQuadTree();
 	collisionManager->DrawBounds();
 	bombSpawnManager->DrawBombs();
+
 
 	meshManagerSingleton->Render();
 
@@ -214,8 +215,8 @@ void GameManager::Init( HINSTANCE hInstance, LPWSTR lpCmdLine, int nCmdShow)
 	// Get the singletons
 	cameraSingleton = CameraSingleton::GetInstance();
 	//TEMPORARY SEE IF YOU LIKE AND CHANGE IF NOT
-	cameraSingleton->SetPosition(vector3(0.0f, -10.0f, 10.0f));
-	cameraSingleton->Rotate(-0.7f, 0.0f);
+	cameraSingleton->SetPosition(vector3(0.0f, -25.0f, 20.0f));
+	cameraSingleton->Rotate(-0.8f, 0.0f);
 	
 	meshManagerSingleton = MeshManagerSingleton::GetInstance();
 

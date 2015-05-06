@@ -10,6 +10,9 @@
 
 class Player : public GameObject
 {
+	float health;
+	float totalHealth;
+
 public:
 	/* Constructor */
 	Player(String n, matrix4 pos);
@@ -24,6 +27,10 @@ public:
 	/* GetPosition */
 	/* Override of GameObject's get position because Player position not located at centroid of model */
 	matrix4 GetPosition();
+
+	/* LoseHealth */
+	/* Decrements players health */
+	void LoseHealth(float damage);
 
 	/* Update */
 	/* Updates Player */
@@ -44,6 +51,10 @@ public:
 	/* InBounds */
 	/* Checks to see if Player is in bounds */
 	bool InBounds();
+
+	/* DrawHealthBar */
+	/* Draw players health bar to screen */
+	void DrawHealthBar(float xPos);
 };
 #endif
 

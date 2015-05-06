@@ -13,9 +13,12 @@
 #include <time.h>
 class Ball : public GameObject
 {
+	Player* player1;
+	Player* player2;
+
 public:
 	/* Constructor */
-	Ball(String ballName, matrix4 pos, vector3 vel);
+	Ball(String ballName, matrix4 pos, vector3 vel, Player* p1, Player* p2);
 	
 	/* Destructor */
 	~Ball();
