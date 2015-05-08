@@ -17,10 +17,11 @@ class Ball : public GameObject
 	Player* player1;
 	Player* player2;
 	String collidedWith;
+	bool ballIsTemp;
 
 public:
 	/* Constructor */
-	Ball(String ballName, matrix4 pos, vector3 vel, Player* p1, Player* p2);
+	Ball(String ballName, matrix4 pos, vector3 vel, Player* p1, Player* p2, bool tempBall);
 	
 	/* Destructor */
 	~Ball();
@@ -52,6 +53,8 @@ public:
 	/* InBounds */
 	/* Checks to see if the ball is within the bounds of the arena */
 	bool InBounds();
+
+	void removeBall();
 };
 #endif
 

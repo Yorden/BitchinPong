@@ -94,9 +94,11 @@ void GameManager::Update () {
 	systemSingleton->UpdateTime();
 
 	// Update all current GameObjects
-	for(int i = 0; i < gameObjects.size(); i++) {
+	for(int i = 0; i < gameObjects.size(); i++) 
+	{
 		gameObjects[i]->Update();
 	}
+
 	// Check for collisions
 	collisionManager->CheckCollisions(gameObjects, *player1, *player2);
 	
@@ -206,13 +208,13 @@ void GameManager::Init( HINSTANCE hInstance, LPWSTR lpCmdLine, int nCmdShow) {
 void GameManager::InitGameObjects() {
 	player1 = new Player("Player1", glm::translate(vector3(-16.0f, 0.0f, 0.0f)));
 	player2 = new Player("Player2", glm::translate(vector3(16.0f, 0.0f, 0.0f)));
-	ball1 = new Ball("Ball1", matrix4(IDENTITY), vector3(0.2f, 0, 0), player1, player2);
+	ball1 = new Ball("Ball1", matrix4(IDENTITY), vector3(0.2f, 0, 0), player1, player2, false);
 
 	gameObjects.push_back(player1);
 	gameObjects.push_back(player2);
 	gameObjects.push_back(ball1);
 
-	bombSpawnManager->SpawnBombs(gameObjects, 40);
+	bombSpawnManager->SpawnBombs(gameObjects, 5);
 }
 
 /* LoadModels */

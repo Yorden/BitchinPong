@@ -43,7 +43,7 @@ void Bomb::Explode(std::vector<GameObject*>& gameObjects, Player& player1, Playe
 		x = cosf(2 * PI / 8 * i) * 0.05f;
 		y = sinf(2 * PI / 8 * i) * 0.05f;
 
-		Ball* b = new Ball("Ball_" + std::to_string(gameObjects.size()), position, vector3(x, y, 0), &player1, &player2);
+		Ball* b = new Ball("Ball_" + std::to_string(gameObjects.size()), position, vector3(x, y, 0), &player1, &player2, true);
 
 		gameObjects.push_back(b);
 	}
