@@ -16,8 +16,7 @@ BoundingBox::BoundingBox(String n, matrix4 pos) {
 }
 
 /* Destructor */
-BoundingBox::~BoundingBox() 
-{
+BoundingBox::~BoundingBox() {
 }
 
 /* GetName */
@@ -51,10 +50,10 @@ void BoundingBox::SetPosition(matrix4 pos) {
 }
 
 /* GenerateBoundingBox_Model */
-void BoundingBox::GenerateBoundingBox_Model() {
+void BoundingBox::GenerateBoundingBox_Model(String t) {
 	MeshManagerSingleton* mesh = MeshManagerSingleton::GetInstance();
 
-	std::vector<vector3> vertices = mesh->GetVertices(name);
+	std::vector<vector3> vertices = mesh->GetVertices(t);
 
 	for(int i = 0; i < vertices.size(); i++) {
 		vector2 vertex = vector2(vertices[i].x, vertices[i].y);

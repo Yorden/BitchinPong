@@ -3,9 +3,8 @@
 /* Constructor */
 QuadTree::QuadTree() {
 	minNumObjects = 3;
-	groups = vector<vector<GameObject*>>();
 	squares = vector<Square*>();
-	drawTest = new Square(matrix4(IDENTITY), vector3(20.0f, 10.0f, 0.1f));
+	groups = vector<vector<GameObject*>>();
 }
 
 /* Destructor */
@@ -38,15 +37,22 @@ void QuadTree::GenerateQuadTree(vector<GameObject*> gameObjects, matrix4 pos, ve
 
 	int counter = 0;
 	vector<GameObject*> containing;
-	
+
 	BoundingBox* box = new BoundingBox("Square", pos);
 	box->GenerateBoundingBox_Manual(pos, scale);
 
 	for(int i = 0; i < gameObjects.size(); i++) {
-		matrix4 globalPos = gameObjects[i]->GetPosition();
+		if(gameObjects[i]->GetType() == "Player") {
+			if(box->CollidesWith(*gameObjects[i]->boundingBox)) {
+				containing.push_back(gameObjects[i]);
+			}
+		} 
+		else {
+			matrix4 globalPos = gameObjects[i]->GetPosition();
 
-		if(box->Contains(vector3(globalPos[3]))) {
-			containing.push_back(gameObjects[i]);
+			if(box->Contains(vector3(globalPos[3]))) {
+				containing.push_back(gameObjects[i]);
+			}
 		}
 	}
 
@@ -57,7 +63,7 @@ void QuadTree::GenerateQuadTree(vector<GameObject*> gameObjects, matrix4 pos, ve
 		matrix4 bottomLeft = pos * glm::translate(vector3(-scale.x/4, -scale.y/4, 0.0f));
 		matrix4 bottomRight = pos * glm::translate(vector3(scale.x/4, -scale.y/4, 0.0f));
 		vector3 newScale = scale / 2.0f;
-		
+
 		GenerateQuadTree(containing, topLeft, newScale);
 		GenerateQuadTree(containing, topRight, newScale);
 		GenerateQuadTree(containing, bottomLeft, newScale);

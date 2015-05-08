@@ -19,10 +19,6 @@ public:
 
 	/* Destructor */
 	~Player();
-	
-	/* Init */
-	/* Initializes Player */
-	void Init();
 
 	/* LoseHealth */
 	/* Decrements players health */

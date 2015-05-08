@@ -8,6 +8,7 @@
 
 #include "ME\MyEngine.h"
 #include "Player.h"
+#include "Ball.h"
 
 class Bomb : public GameObject
 {
@@ -17,10 +18,6 @@ public:
 
 	/* Destructor */
 	~Bomb(void);
-
-	/* Init */
-	/* Initializes Ball */
-	void Init();
 
 	/* Update */
 	/* Updates ball */
@@ -34,15 +31,12 @@ public:
 	/* Moves ball */
 	void Move() override;
 
-	/* isActive */
-	/* Checks to see if the ball hit the bomb */
-	bool isActive();
+	/* Explode */
+	void Explode(std::vector<GameObject*>& gameObjects, Player& player1, Player& player2);
 
+	/* InBounds */
+	/* Checks to see if the bomb is within the bounds of the screen */
 	bool InBounds();
-
-	void Explode(std::vector<Ball*> ballList, Player* player1, Player* player2);
-
-	vector3 getCenterPoint(String targetMatName);
 };
 #endif
 

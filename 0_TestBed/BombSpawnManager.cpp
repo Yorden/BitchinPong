@@ -21,31 +21,20 @@ BombSpawnManager* BombSpawnManager::GetInstance() {
 	return instance;
 }
 
-/* GetBombs */
-std::vector<Bomb*> BombSpawnManager::GetBombs() {
-	return bombs;
+/* SpawnBombs */
+void BombSpawnManager::SpawnBombs(std::vector<GameObject*>& gameObjects, int num) {
+	for(int i = 0; i < num; i++) {
+		SpawnBomb(gameObjects);
+	}
 }
 
 /* SpawnBomb */
 void BombSpawnManager::SpawnBomb(std::vector<GameObject*>& gameObjects) {
-	String name = "Bomb" + std::to_string(bombs.size());
-
-	float randX = (rand() % 38);
-	randX -= 20;
-
-	float randY = (rand() % 18);
-	randY -= 10;
+	String name = "Bomb" + std::to_string(gameObjects.size());
+	float randX = (rand() % 18) - (rand() % 18);
+	float randY = (rand() % 10) - (rand() % 10);
 	
-	Bomb* b = new Bomb(name, matrix4(IDENTITY) * glm::translate(vector3(randX, randY, 0.0f)));
-	b->Init();
+	Bomb* b = new Bomb("Bomb_" + std::to_string(std::rand() % 1000), matrix4(IDENTITY) * glm::translate(vector3(randX, randY, 0.0f)));
 
-	bombs.push_back(b);
 	gameObjects.push_back(b);
-}
-
-/* DrawBombs */
-void BombSpawnManager::DrawBombs() {
-	for(int i = 0; i < bombs.size(); i++) {
-		bombs[i]->Draw();
-	}
 }

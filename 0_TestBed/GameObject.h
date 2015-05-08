@@ -14,6 +14,7 @@ class GameObject
 public:
 	/* Variables */
 	String name; // Used to identify instance in mesh/collision managers
+	String type; // Used to identify type for collision management
 	matrix4 position; // Gameobject global position
 	vector3 velocity; // Current velocity
 	float acceleration; // Current acceleration
@@ -31,6 +32,10 @@ public:
 	/* Returns string used to identify instance of GameObject in mesh/collision managers */
 	String GetName();
 
+	/* GetType */
+	/* Returns string used to identify instance of GameObject in collision manager */
+	String GetType();
+
 	/* GetPosition */
 	/* Returns position of GameObject in global space */
 	virtual matrix4 GetPosition();
@@ -46,10 +51,6 @@ public:
 	/* GetAcceleration */
 	/* Returns current acceleration of the GameObject */
 	float GetAcceleration();
-
-	/* Init */
-	/* Initializes GameObject */
-	virtual void Init();
 
 	/* Update */
 	/* Updates GameObject */

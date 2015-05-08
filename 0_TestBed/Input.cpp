@@ -37,28 +37,3 @@ void GameManager::ProcessKeyboard()
 		player2->MovePlayer(-1);
 	}
 }
-
-/* ProcessMouse */
-void GameManager::ProcessMouse(){
-	m_bArcBall = false;
-	m_bFPC = false;
-	
-	if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Middle))
-		m_bArcBall = true;
-	
-	if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Right))
-		m_bFPC = true;
-
-	static bool bLeft_Released = false;
-	if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
-	{
-		bLeft_Released = true;
-	}
-	else
-	{
-		if(bLeft_Released == true)
-		{
-		}
-		bLeft_Released = false;
-	}
-}

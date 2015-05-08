@@ -8,19 +8,31 @@
 /* Constructor */
 GameObject::GameObject(String n, matrix4 pos, vector3 vel, float maxSp, float accel) {
 	name = n;
+	type = "GameObject";
 	position = pos;
 	velocity = vel;
 	maxSpeed = maxSp;
 	acceleration = accel;
+	boundingBox = new BoundingBox(name, pos);
+
+	meshManager = MeshManagerSingleton::GetInstance();
 }
 
 /* Destructor */
 GameObject::~GameObject() {
+	if(boundingBox != nullptr) {
+		boundingBox = nullptr;
+	}
 }
 
 /* GetName */
 String GameObject::GetName() {
 	return name;
+}
+
+/* GetType */
+String GameObject::GetType() {
+	return type;
 }
 
 /* GetPosition */
@@ -43,24 +55,16 @@ float GameObject::GetAcceleration() {
 	return acceleration;
 }
 
-/* Init */
-void GameObject::Init() {
-	meshManager = MeshManagerSingleton::GetInstance();
-	boundingBox = new BoundingBox(name, position);
-}
-
 /* Update */
 void GameObject::Update() {
 	if(glm::length(velocity) > 0.0f) {
 		Move();
 	}
-
-	meshManager->SetModelMatrix(position, name);
-	boundingBox->GenerateBoundingBox_Model();
 	boundingBox->SetPosition(position);
 }
 
 /* Draw */
 void GameObject::Draw() {
-	meshManager->AddInstanceToRenderList(name);
+	meshManager->SetModelMatrix(position, type);
+	meshManager->AddInstanceToRenderList(type);
 }

@@ -49,8 +49,8 @@ public:
 	void SetPosition(matrix4 pos);
 
 	/* GenerateBoundingBox_Model */
-	/* Creates collision box around specified model */
-	void GenerateBoundingBox_Model();
+	/* Creates collision box around specified model based on its type */
+	void GenerateBoundingBox_Model(String t);
 
 	/* GenerateBoundingBox_Manual */
 	/* Creates collision box at specified location with specified scale */

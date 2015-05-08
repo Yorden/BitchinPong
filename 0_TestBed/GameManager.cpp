@@ -10,7 +10,6 @@
 
 /* Instance of the application */
 GameManager* GameManager::instance = nullptr;
-std::vector<Ball*> ballVect;
 
 /* Constructor */
 GameManager::GameManager() {
@@ -19,21 +18,6 @@ GameManager::GameManager() {
 	window = nullptr;
 	openGLSingleton = nullptr;
 	lightManagerSingleton = nullptr;
-	collisionManager  = CollisionManager::GetInstance();
-	bombSpawnManager = BombSpawnManager::GetInstance();
-
-	player1 = new Player("Player1", glm::translate(vector3(-16.0f, 0.0f, 0.0f)));
-	player2 = new Player("Player2", glm::translate(vector3(16.0f, 0.0f, 0.0f)));
-	ball1 = new Ball("Ball1", matrix4(IDENTITY), vector3(0.05, 0, 0), player1, player2);
-	ball2 = new Ball("Ball2", matrix4(IDENTITY), vector3(-0.05, 0, 0), player1, player2);
-
-	gameObjects.push_back(player1);
-	gameObjects.push_back(player2);
-	gameObjects.push_back(ball1);
-	gameObjects.push_back(ball2);
-
-	ballVect.push_back(ball1);
-	ballVect.push_back(ball2);
 }
 
 /* Copy Constructor */
@@ -49,6 +33,9 @@ GameManager& GameManager::operator = (GameManager const& other) {
 GameManager::~GameManager() {
 	// Call the release method when the instance is destroyed
 	Release();
+	delete player1;
+	delete player2;
+	delete ball1;
 }
 
 /* GetInstance */
@@ -83,21 +70,6 @@ void GameManager::Release() {
 	ReleaseAllSingletons();
 }
 
-void GameManager::InitMyEngine() {
-	// Color of the screen
-	windowColor = vector4(0.4f, 0.6f, 0.9f, 0.0f); // Set the clear color based on Microsoft's CornflowerBlue (default in XNA)
-		
-	// Indicate window properties
-	systemSingleton->WindowName = "Bitchin' Pong";
-	systemSingleton->WindowWidth = 1280;
-	systemSingleton->WindowHeight = 720;
-	systemSingleton->WindowFullscreen = false;
-	systemSingleton->WindowBorderless = false;
-
-	// Get the singletons
-	lightManagerSingleton = LightManagerSingleton::GetInstance();
-}
-
 void GameManager::Run () {
 	//Run the main loop until the exit message is sent
 	MSG msg = {0};
@@ -111,89 +83,51 @@ void GameManager::Run () {
 		else
 		{
 			ProcessKeyboard();
-			ProcessMouse();
 			Update();
 			Display();
 		}
 	}
 }
 
+/* Update */
 void GameManager::Update () {
-	systemSingleton->UpdateTime(); //Update the system
+	systemSingleton->UpdateTime();
 
-	player1->Update();
-	player2->Update();
-	for(int i = 0; i < ballVect.size(); i++)
-	{
-		ballVect[i]->Update();
+	// Update all current GameObjects
+	for(int i = 0; i < gameObjects.size(); i++) {
+		gameObjects[i]->Update();
 	}
-
-	collisionManager->Update(*player1, *player2, ballVect, gameObjects, bombSpawnManager->bombs);
-	//gets the sizes of the ball and bomb vectors
-	int bombVecSize = bombSpawnManager->bombs.size();
-	int ballVecSize = ballVect.size();
-	//nested for loops check every bomb and ball in the scene
-	for(int i = 0; i < bombVecSize; i++)
-	{
-		for(int j = i+1; j < ballVecSize; j++)
-		{
-<<<<<<< HEAD
-			bombSpawnManager->bombs[i]->boundingBox->~BoundingBox();
-			bombSpawnManager->bombs.erase(bombSpawnManager->bombs.begin() + i);			
-
-			String name = "ball" + std::to_string(ballVect.size());
-
-			float randX = (rand() % 38);
-			randX -= 20;
-
-			float randY = (rand() % 18);
-			randY -= 10;
-	
-			Ball* ball = new Ball(name, matrix4(IDENTITY), vector3(randX, randY, 0), player1, player2);
-			ball->Init();
-
-			ballVect.push_back(ball);
-			gameObjects.push_back(ball);			
-=======
-			if(collisionManager->BombCollision(*ballVect[j], bombSpawnManager->bombs[i]))
-			{
-				bombSpawnManager->bombs[i]->Explode(ballVect);
-			}
->>>>>>> b119bef159faa8e281ccdc34136deb503f29880e
-		}
-	}
+	// Check for collisions
+	collisionManager->CheckCollisions(gameObjects, *player1, *player2);
 	
 	//Update the mesh information
 	meshManagerSingleton->Update();
 }
 
+/* Display */
 void GameManager::Display (void) {
-	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ); // clear the window
+	// Clear the window
+	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
-	player1->Draw();
-	player2->Draw();
-
-	for(int i = 0; i < ballVect.size(); i++){
-		ballVect[i]->Draw();
+	// Draw all current GameObjects
+	for(int i = 0; i < gameObjects.size(); i++) {
+		gameObjects[i]->Draw();
 	}
 
-<<<<<<< HEAD
-	collisionManager->Draw(gameObjects);
-=======
-	collisionManager->RenderBoxes(gameObjects);
-	collisionManager->RenderQuadTree();
-	collisionManager->DrawBounds();
->>>>>>> b119bef159faa8e281ccdc34136deb503f29880e
-	bombSpawnManager->DrawBombs();
+	// Draw collision data
+	//collisionManager->Draw(gameObjects);
 
+	// Draw Battle Arena
 	meshManagerSingleton->AddInstanceToRenderList("BattleArena");
+
+	// Render everything
 	meshManagerSingleton->Render();
 
-	openGLSingleton->GLSwapBuffers(); //Swaps the OpenGL buffers
+	//Swaps the OpenGL buffers
+	openGLSingleton->GLSwapBuffers();
 }
 
-LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
-{
+LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	//Callbacks for winapp 
     switch(msg)
     {
@@ -209,67 +143,58 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     return 0;
 }
 
-void GameManager::Init( HINSTANCE hInstance, LPWSTR lpCmdLine, int nCmdShow)
-{
-	// Is this running out of Visual Studio?
-	if(IsDebuggerPresent())
-	{
-		printf("Shaders: ");
-		system("cmd.exe /C xcopy \"../Solution/Shaders\" \"Shaders\" /y /q");
-		window->CreateConsoleWindow();
-	}
-
-	// Get the system singleton
+/* Init */
+void GameManager::Init( HINSTANCE hInstance, LPWSTR lpCmdLine, int nCmdShow) {
+	// Initialize singletons
 	systemSingleton = SystemSingleton::GetInstance();
+	cameraSingleton = CameraSingleton::GetInstance();
+	collisionManager  = CollisionManager::GetInstance();
+	openGLSingleton = GLSystemSingleton::GetInstance();
+	lightManagerSingleton = LightManagerSingleton::GetInstance();
+	bombSpawnManager = BombSpawnManager::GetInstance();
 
-	// Init the App System
-	InitMyEngine();
-
-	// Read the configuration file
-	ReadConfig();
-
-#pragma region Window Construction and Context setup
 	// Create a new window and set its properties
 	window = new WindowClass( hInstance, nCmdShow, WndProc);
 	window->SetFullscreen(systemSingleton->IsWindowFullscreen());
 	window->SetBorderless(systemSingleton->IsWindowBorderless());
+	systemSingleton->WindowName = "Bitchin' Pong";
+	systemSingleton->WindowWidth = 1280;
+	systemSingleton->WindowHeight = 720;
+	systemSingleton->WindowFullscreen = false;
+	systemSingleton->WindowBorderless = false;
+	windowColor = vector4(0.4f, 0.6f, 0.9f, 0.0f);
 
 	// Make the Window name a wide string
 	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 	std::wstring wide = converter.from_bytes( systemSingleton->WindowName);
-
-	// Create a window in the window class
 	window->CreateMEWindow(wide.c_str(), systemSingleton->WindowWidth, systemSingleton->WindowHeight);
-	
-	// Get the instance of the class
-	openGLSingleton = GLSystemSingleton::GetInstance();
 
 	// Set OPENGL 3.x Context
 	systemSingleton->m_RenderingContext = OPENGL3X;
-	
-	// Create context
 	openGLSingleton->InitGLDevice(window->GetHandler());
 
 	// Verify what is the OpenGL rendering context and save it to system (3.x might fail, in which case exit)
 	if(openGLSingleton->IsNewOpenGLRunning() == false)
 		exit(0);
-#pragma endregion
-
-	// Get the singletons
-	cameraSingleton = CameraSingleton::GetInstance();
-	//TEMPORARY SEE IF YOU LIKE AND CHANGE IF NOT
+	
+	// Set camera position/orientation
 	cameraSingleton->SetPosition(vector3(0.0f, -25.0f, 20.0f));
 	cameraSingleton->Rotate(-0.8f, 0.0f);
+
+	// Set the properties for the light in the scene
+	lightManagerSingleton->SetPosition( glm::vec3( 0, 0, 10) );
+	lightManagerSingleton->SetColor( glm::vec3( 1, 1, 1) );
+	lightManagerSingleton->SetIntensity ( 5.0f ); //Rotating Light
+	lightManagerSingleton->SetIntensity ( 0.75f, 0 ); //Ambient light (Ambient Light is always the first light, or light[0])
 	
+
 	meshManagerSingleton = MeshManagerSingleton::GetInstance();
 
-	// Initialize the App Variables
-	InitInternalAppVariables();
-	InitGameObjects();
+	// Load models 
+	LoadModels();
 
-	//Color of the window
-	if(systemSingleton->m_RenderingContext == OPENGL3X)
-		glClearColor( windowColor.r, windowColor.g, windowColor.b, windowColor.a);
+	// Initialize GameObjects
+	InitGameObjects();
 
 	//Start the clock
 	systemSingleton->StartClock();
@@ -277,42 +202,28 @@ void GameManager::Init( HINSTANCE hInstance, LPWSTR lpCmdLine, int nCmdShow)
 	printf("\n");
 }
 
+/* InitGameObjects */
 void GameManager::InitGameObjects() {
-	meshManagerSingleton->LoadModelUnthreaded("Minecraft\\BattleArena.obj", "BattleArena", glm::rotate(matrix4(IDENTITY), 90.0f, vector3(1.0f, 0, 0)) * glm::rotate(matrix4(IDENTITY), 90.0f, vector3(0, 1.0f, 0)) * glm::translate(vector3(0, -2.0f, 0)) * glm::scale(vector3(1.45f, 1.0f, 1.75f)));
+	player1 = new Player("Player1", glm::translate(vector3(-16.0f, 0.0f, 0.0f)));
+	player2 = new Player("Player2", glm::translate(vector3(16.0f, 0.0f, 0.0f)));
+	ball1 = new Ball("Ball1", matrix4(IDENTITY), vector3(0.2f, 0, 0), player1, player2);
 
-	player1->Init();
-	player2->Init();
+	gameObjects.push_back(player1);
+	gameObjects.push_back(player2);
+	gameObjects.push_back(ball1);
 
-	for(int i = 0; i < ballVect.size(); i++)
-	{
-		ballVect[i]->Init();
-	}
-	//ball1->Init();
-	//ball2->Init();
-	meshManagerSingleton->Update();
-
-	bombSpawnManager->SpawnBomb(gameObjects);
-	bombSpawnManager->SpawnBomb(gameObjects);
-	bombSpawnManager->SpawnBomb(gameObjects);
-	bombSpawnManager->SpawnBomb(gameObjects);
-	bombSpawnManager->SpawnBomb(gameObjects);
-	bombSpawnManager->SpawnBomb(gameObjects);
-	bombSpawnManager->SpawnBomb(gameObjects);
-	bombSpawnManager->SpawnBomb(gameObjects);
-	bombSpawnManager->SpawnBomb(gameObjects);
-	bombSpawnManager->SpawnBomb(gameObjects);
-	bombSpawnManager->SpawnBomb(gameObjects);
-	bombSpawnManager->SpawnBomb(gameObjects);
-	bombSpawnManager->SpawnBomb(gameObjects);
-	bombSpawnManager->SpawnBomb(gameObjects);
-	bombSpawnManager->SpawnBomb(gameObjects);
+	bombSpawnManager->SpawnBombs(gameObjects, 40);
 }
 
-void GameManager::InitInternalAppVariables() {
-	
-	// Set the properties for the light in the scene
-	lightManagerSingleton->SetPosition( glm::vec3( 0, 0, 10) );
-	lightManagerSingleton->SetColor( glm::vec3( 1, 1, 1) );
-	lightManagerSingleton->SetIntensity ( 5.0f ); //Rotating Light
-	lightManagerSingleton->SetIntensity ( 0.75f, 0 ); //Ambient light (Ambient Light is always the first light, or light[0])
+/* LoadModels */
+void GameManager::LoadModels() {
+	meshManagerSingleton->LoadModelUnthreaded("BattleArena.obj", "BattleArena", 
+												glm::rotate(matrix4(IDENTITY), 90.0f, vector3(1.0f, 0, 0)) * 
+												glm::rotate(matrix4(IDENTITY), 90.0f, vector3(0, 1.0f, 0)) * 
+												glm::translate(vector3(0, -2.0f, 0)) * 
+												glm::scale(vector3(1.45f, 1.0f, 1.75f)));
+
+	meshManagerSingleton->LoadModelUnthreaded("Player.obj", "Player");
+	meshManagerSingleton->LoadModelUnthreaded("Ball.obj", "Ball");
+	meshManagerSingleton->LoadModelUnthreaded("Bomb.obj", "Bomb");
 }

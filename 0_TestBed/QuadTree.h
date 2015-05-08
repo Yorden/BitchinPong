@@ -1,3 +1,8 @@
+/* Project: BITCHIN PONG */
+/* Team Members: Kirk Hewitt, Jordan Karlsruher, John Radkins */
+/* DSA II - 309.02 */
+/* Spring 2015 */
+
 #ifndef QUADTREE
 #define QUADTREE
 
@@ -8,10 +13,6 @@ using namespace std;
 
 class QuadTree
 {
-public:
-	vector<vector<GameObject*>> groups; // List containing groups of gameobjects
-	int minNumObjects; // Minimum number of gameobjects per quad
-
 	struct Square{
 		matrix4 position;
 		vector3 scale;
@@ -29,10 +30,10 @@ public:
 		}
 	};
 
+public:
+	int minNumObjects; // Minimum number of gameobjects per quad
 	vector<Square*> squares; // Used to draw quadtree to screen
-
-	Square* drawTest;
-
+	vector<vector<GameObject*>> groups; // List containing groups of gameobjects
 
 	/* Constructor */
 	QuadTree();

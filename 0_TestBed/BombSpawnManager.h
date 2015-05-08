@@ -1,3 +1,8 @@
+/* Project: BITCHIN PONG */
+/* Team Members: Kirk Hewitt, Jordan Karlsruher, John Radkins */
+/* DSA II - 309.02 */
+/* Spring 2015 */
+
 #ifndef BOMB_SPAWN_MANAGER
 #define BOMB_SPAWN_MANAGER
 
@@ -9,11 +14,9 @@
 class BombSpawnManager
 {
 	static BombSpawnManager* instance;
-
-public:
-	std::vector<Bomb*> bombs;
 	float spawnTimer;
 
+public:
 	/* Constructor */
 	BombSpawnManager();
 
@@ -24,17 +27,13 @@ public:
 	/* Returns singleton */
 	static BombSpawnManager* GetInstance();
 
-	/* GetBombs */
-	/* Returns array containing bombs on screen */
-	std::vector<Bomb*> GetBombs();
+	/* SpawnBombs */
+	/* Adds specified number of bombs to gameObjects list */
+	void SpawnBombs(std::vector<GameObject*>& gameObjects, int num);
 
 	/* SpawnBomb */
 	/* Adds bomb to play field */
 	void SpawnBomb(std::vector<GameObject*>& gameObjects);
-	
-	/* DrawBombs */
-	/* Draws bombs to screen */
-	void DrawBombs();
 };
 #endif
 

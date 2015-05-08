@@ -14,12 +14,11 @@
 #include <SFML\Graphics.hpp>
 #include <chrono>
 
-using namespace MyEngine; // So we can access classes in dll
+using namespace MyEngine;
 
 class GameManager
 {
 	bool m_bFPC;// First Person Camera flag
-	bool m_bArcBall;// Arcball flag
 	vector4 windowColor;
 
 	// Game variables
@@ -27,7 +26,6 @@ class GameManager
 	Player* player1;
 	Player* player2;
 	Ball* ball1;
-	Ball* ball2;
 	
 
 	// Singletons
@@ -71,26 +69,18 @@ private:
 	/* Display */
 	/* Displays game */
 	void Display();
-
-	/* Idle */
-	/* Runs faster than update */
-	void Idle();
-
-	/* InitAppSystem */
-	/* Initialize MyEngine variables */
-	void InitMyEngine();
+	
+	/* Init */
+	/* Initializes the MyEngine window and rendering context */
+	void Init( HINSTANCE hInstance, LPWSTR lpCmdLine, int nCmdShow);
 
 	/* InitGameObjects */
 	/* Initializes GameObjects */
 	void InitGameObjects();
 
-	/* InitAppVariables */
-	/* Initializes this applications internal variables */
-	void InitInternalAppVariables();
-	
-	/* Init */
-	/* Initializes the MyEngine window and rendering context */
-	void Init( HINSTANCE hInstance, LPWSTR lpCmdLine, int nCmdShow);
+	/* LoadModels */
+	/* Loads models into MeshManagerSingleton */
+	void LoadModels();
 
 	/* Release */
 	/* Releases the application */
@@ -99,14 +89,6 @@ private:
 	/* ProcessKeyboard */
 	/* Process user keyboard input */
 	void ProcessKeyboard();
-
-	/* ProcessMouse */
-	/*  Process user mouse input */
-	void ProcessMouse();
-
-	void ReadConfig();
-
-	void WriteConfig();
 };
 
 #endif

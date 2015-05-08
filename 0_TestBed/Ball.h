@@ -11,10 +11,12 @@
 
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 class Ball : public GameObject
 {
 	Player* player1;
 	Player* player2;
+	String collidedWith;
 
 public:
 	/* Constructor */
@@ -23,9 +25,13 @@ public:
 	/* Destructor */
 	~Ball();
 
-	/* Init */
-	/* Initializes Ball */
-	void Init();
+	/* GetCollidedWith */
+	/* Returns string representing most recent paddle hit */
+	String GetCollidedWith();
+
+	/* SetCollidedWith */
+	/* Sets string representing most recent paddle hit */
+	void SetCollidedWith(String n);
 
 	/* Update */
 	/* Updates ball */
@@ -40,15 +46,12 @@ public:
 	void Move() override;
 
 	/* SwitchDirection */	
-	void SwitchDirection(GameObject& ball,  GameObject& collis);
+	/* Changes direction ball is moving when it collides with another GameObject */
+	void SwitchDirection(GameObject& obj);
 
-	//The function to handle balls running into one another
-	void ballOnBallCollision(GameObject& thisBall, GameObject& otherBall);
-
-	/* Switches ball direction when it hits a paddle/wall */
+	/* InBounds */
+	/* Checks to see if the ball is within the bounds of the arena */
 	bool InBounds();
-
-	vector3 getCenterPoint(String targetMatName);
 };
 #endif
 

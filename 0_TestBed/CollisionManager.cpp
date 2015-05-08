@@ -1,3 +1,8 @@
+/* Project: BITCHIN PONG */
+/* Team Members: Kirk Hewitt, Jordan Karlsruher, John Radkins */
+/* DSA II - 309.02 */
+/* Spring 2015 */
+
 #include "CollisionManager.h"
 
 CollisionManager* CollisionManager::instance = nullptr;
@@ -23,27 +28,75 @@ CollisionManager* CollisionManager::GetInstance() {
 	return instance;
 }
 
-/* Update */
-void CollisionManager::Update(Player& player1, Player& player2,  std::vector<Ball*> ballList, std::vector<GameObject*> gameObjects, std::vector<Bomb*> bombs) {
-	
-	int ballListSize = ballList.size();
-	for(int i = 0; i < ballListSize; i++){
-		for(int j = i+1; j < ballListSize; j++){
-			BallBallCollision(*ballList[i] , *ballList[j]);
-		}
-	}
-
-	for(int i = 0; i < ballListSize; i++){
-		PlayerCollision(player1, *ballList[i]);
-		PlayerCollision(player2, *ballList[i]);
-	}
-
-
-
-	
-
+/* CheckCollisions */
+void CollisionManager::CheckCollisions(std::vector<GameObject*>& gameObjects, Player& player1, Player& player2) {
 	groups.clear();
 	groups = quadTree->GenerateGroups(gameObjects, matrix4(IDENTITY), vector3(36.0f, 20.0f, 0.0f));
+
+	for(int i = 0; i < groups.size(); i++) {
+		for(int j = 0; j < groups[i].size(); j++) {
+			for(int k = j + 1; k < groups[i].size(); k++) {
+				GameObject* g1 = groups[i][j];
+				GameObject* g2 = groups[i][k];
+
+				String g1Type = g1->GetType();
+				String g2Type = g2->GetType();
+
+				if(g1Type == "Player" && g2Type == "Ball") {
+					Ball* ball = (Ball*)g2;
+					Player* player = (Player*)g1;
+
+					PlayerCollision(*ball, *player);
+				}
+				else if(g2Type == "Player" && g1Type == "Ball") {
+					Ball* ball = (Ball*)g1;
+					Player* player = (Player*)g2;
+
+					PlayerCollision(*ball, *player);
+				}
+				else if(g1Type == "Bomb" && g2Type == "Ball") {
+					Ball* ball = (Ball*)g2;
+					Bomb* bomb = (Bomb*)g1;
+
+					BombCollision(gameObjects, *ball, *bomb, player1, player2);
+				}
+				else if(g2Type == "Bomb" && g1Type == "Ball") {
+					Ball* ball = (Ball*)g1;
+					Bomb* bomb = (Bomb*)g2;
+
+					BombCollision(gameObjects, *ball, *bomb, player1, player2);
+				}
+				else if(g1Type == "Ball" && g2Type == "Ball") {
+					Ball* ball1 = (Ball*)g1;
+					Ball* ball2 = (Ball*)g2;
+
+					//BallCollision(*ball1, *ball2);
+				}
+			}
+		}
+	}
+}
+
+/* PlayerCollision */
+void CollisionManager::PlayerCollision(Ball& ball, Player& player) {
+	if(ball.boundingBox->CollidesWith(*player.boundingBox) && player.name != ball.GetCollidedWith()) {
+		ball.SwitchDirection(player);
+	}
+}
+
+/* BallCollision */
+void CollisionManager::BallCollision(Ball& ball1, Ball& ball2) {
+	if(ball1.boundingBox->CollidesWith(*ball2.boundingBox)) {
+		ball1.SwitchDirection(ball2);
+		ball2.SwitchDirection(ball1);
+	}
+}
+
+/* BombCollision */
+void CollisionManager::BombCollision(std::vector<GameObject*>& gameObjects, Ball& ball, Bomb& bomb, Player& player1, Player& player2) {	
+	if(ball.boundingBox->CollidesWith(*bomb.boundingBox)) {
+		bomb.Explode(gameObjects, player1, player2);
+	}
 }
 
 /* Draw */
@@ -53,6 +106,12 @@ void CollisionManager::Draw(std::vector<GameObject*> gameObjects) {
 	DrawBounds();
 }
 
+/* DrawBounds */
+void CollisionManager::DrawBounds() {
+	MeshManagerSingleton* meshManager = MeshManagerSingleton::GetInstance();
+	meshManager->AddCubeToQueue(matrix4(IDENTITY) * glm::scale(boundsScale), MERED, MERENDER::WIRE);
+}
+
 /* RenderBoxes */
 void CollisionManager::RenderBoxes(std::vector<GameObject*> gameObjects) {
 	for(int i = 0; i < gameObjects.size(); i++) {
@@ -60,39 +119,4 @@ void CollisionManager::RenderBoxes(std::vector<GameObject*> gameObjects) {
 
 		g->boundingBox->AddToRenderList();
 	}
-}
-
-/* BallCollision */
-bool CollisionManager::PlayerCollision(Player& player, Ball& ball) {
-	/* Player1 Check */
-	if (player.boundingBox->CollidesWith(*ball.boundingBox)) {
-		ball.SwitchDirection(ball, player);
-		return true;
-	}
-	return false;
-}
-
-/* BallCollision */
-bool CollisionManager::BallBallCollision(Ball& ball1, Ball& ball2) {
-	if (ball1.boundingBox->CollidesWith(*ball2.boundingBox)) {
-		ball1.ballOnBallCollision(ball1, ball2);
-		return true;
-	}
-	return false;
-}
-
-/* BombCollisions */
-//bool CollisionManager::BombCollision(Ball& ball, std::vector<Bomb*>& bombs) {
-bool CollisionManager::BombCollision(Ball& ball, Bomb* bomb) {	
-	if (ball.boundingBox->CollidesWith(*bomb->boundingBox))
-	{
-		return true;
-	}
-	return false;
-}
-
-/* DrawBounds */
-void CollisionManager::DrawBounds() {
-	MeshManagerSingleton* meshManager = MeshManagerSingleton::GetInstance();
-	meshManager->AddCubeToQueue(matrix4(IDENTITY) * glm::scale(boundsScale), MERED, MERENDER::WIRE);
 }

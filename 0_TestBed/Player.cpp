@@ -7,22 +7,17 @@
 
 /* Constructor */
 Player::Player(String n, matrix4 pos) : 
-	GameObject(n, pos, vector3(0), 0.5f, 0.01f) {
+	GameObject(n, pos, vector3(0), 0.5f, 0.07f) {
 
+		type = "Player";
 		health = 100;
 		totalHealth = 100;
+
+		boundingBox->GenerateBoundingBox_Model(type);
 }
 
 /* Destructor */
 Player::~Player() {
-}
-
-/* Init */
-void Player::Init() {
-	GameObject::Init();
-	meshManager->LoadModelUnthreaded("Minecraft\\Player.obj", name, position);
-	boundingBox->GenerateBoundingBox_Model();
-	boundingBox->SetPosition(position);
 }
 
 /* LoseHealth */

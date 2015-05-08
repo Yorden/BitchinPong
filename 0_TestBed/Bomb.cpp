@@ -6,19 +6,17 @@
 #include "Bomb.h"
 #include "Ball.h";
 
+/* Constructor */
 Bomb::Bomb(String n, matrix4 pos):
-	GameObject(n, pos, vector3(2.0f), 0.0f, 0.0f)
-{
+	GameObject(n, pos, vector3(2.0f), 0.0f, 0.0f) {
+
+		type = "Bomb";
+		boundingBox->GenerateBoundingBox_Model(type);
 }
 
-Bomb::~Bomb(void)
-{
-}
-
-void Bomb::Init() {
-	GameObject::Init();
-	meshManager->LoadModelUnthreaded("Minecraft\\Bomb.obj", name, position);
-	boundingBox->GenerateBoundingBox_Model();
+/* Destructor */
+Bomb::~Bomb(void){
+	GameObject::~GameObject();
 }
 
 /* Update */
@@ -34,26 +32,31 @@ void Bomb::Draw() {
 
 /* Move */
 void Bomb::Move() {
-	position *= glm::translate(velocity);
 }
-/* isActive */
-bool Bomb::isActive(){
-	return true;
+
+/* Explode */
+void Bomb::Explode(std::vector<GameObject*>& gameObjects, Player& player1, Player& player2) {
+	float x;
+	float y;
+
+	for(int i = 1; i < 8; i += 2) {
+		x = cosf(2 * PI / 8 * i) * 0.05f;
+		y = sinf(2 * PI / 8 * i) * 0.05f;
+
+		Ball* b = new Ball("Ball_" + std::to_string(gameObjects.size()), position, vector3(x, y, 0), &player1, &player2);
+
+		gameObjects.push_back(b);
+	}
+
+	for(int i = 0; i < gameObjects.size(); i++) {
+		if(gameObjects[i]->GetName() == name) {
+			gameObjects.erase(gameObjects.begin() + i);
+			break;
+		}
+	}
 }
+
 /* InBounds */
 bool Bomb::InBounds(){
 	return true;
-}
-/*Explode*/
-void Bomb::Explode(std::vector<Ball*> ballList, Player* player1, Player* player2){
-	//ball1 = new Ball("Ball1", matrix4(IDENTITY), vector3(0.05, 0, 0), player1, player2);
-	for(int i = 0; i < 8; i++)
-	{
-		//gets theh x and the y direction
-		float xdirection = position[0][3] +glm::cos((2*PI/8)*i);
-		float ydirection = position[0][2] +glm::sin((2*PI/8)*i);
-		//creates a new ball moving in that direction
-		Ball* b = new Ball("Ball", matrix4(IDENTITY), vector3(xdirection, ydirection, 0), player1, player2);
-		ballList.push_back(b);
-	}
 }
