@@ -70,7 +70,7 @@ void CollisionManager::CheckCollisions(std::vector<GameObject*>& gameObjects, Pl
 					Ball* ball1 = (Ball*)g1;
 					Ball* ball2 = (Ball*)g2;
 
-					//BallCollision(*ball1, *ball2);
+					BallCollision(*ball1, *ball2);
 				}
 			}
 		}
@@ -87,7 +87,7 @@ void CollisionManager::PlayerCollision(Ball& ball, Player& player) {
 /* BallCollision */
 void CollisionManager::BallCollision(Ball& ball1, Ball& ball2) {
 	if(ball1.boundingBox->CollidesWith(*ball2.boundingBox)) {
-		ball1.SwitchDirection(ball2);
+		//ball1.SwitchDirection(ball2);
 		ball2.SwitchDirection(ball1);
 	}
 }

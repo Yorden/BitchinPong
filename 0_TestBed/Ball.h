@@ -21,7 +21,7 @@ class Ball : public GameObject
 
 public:
 	/* Constructor */
-	Ball(String ballName, matrix4 pos, vector3 vel, Player* p1, Player* p2, bool tempBall);
+	Ball(String ballName, matrix4 pos, vector3 vel, Player* p1, Player* p2);
 	
 	/* Destructor */
 	~Ball();
@@ -53,8 +53,6 @@ public:
 	/* InBounds */
 	/* Checks to see if the ball is within the bounds of the arena */
 	bool InBounds();
-
-	void removeBall();
 };
 #endif
 

@@ -63,6 +63,20 @@ void GameManager::ReleaseInstance() {
 	}
 }
 
+//Spawn bombs in a random position
+void GameManager::randSpawnBombs()
+{
+	//A random number that is generated each call
+	float shouldSpawn= rand() % 650;
+
+	//A bomb will only spawn if the random number is equal to the right number
+	if(shouldSpawn == 1)
+	{
+		//If so, it will call the bomb manager's spawn  bomb function
+		bombSpawnManager->SpawnBomb(gameObjects);
+	}
+}
+
 void GameManager::Release() {
 	SafeDelete(window);
 
@@ -97,7 +111,14 @@ void GameManager::Update () {
 	for(int i = 0; i < gameObjects.size(); i++) 
 	{
 		gameObjects[i]->Update();
+
+		//if(gameObjects[i]->GetType() == "Ball")
+		//{
+			//if(gameObjects[i]->rem
+		//}
 	}
+
+	randSpawnBombs();
 
 	// Check for collisions
 	collisionManager->CheckCollisions(gameObjects, *player1, *player2);
@@ -208,13 +229,13 @@ void GameManager::Init( HINSTANCE hInstance, LPWSTR lpCmdLine, int nCmdShow) {
 void GameManager::InitGameObjects() {
 	player1 = new Player("Player1", glm::translate(vector3(-16.0f, 0.0f, 0.0f)));
 	player2 = new Player("Player2", glm::translate(vector3(16.0f, 0.0f, 0.0f)));
-	ball1 = new Ball("Ball1", matrix4(IDENTITY), vector3(0.2f, 0, 0), player1, player2, false);
+	ball1 = new Ball("Ball1", matrix4(IDENTITY), vector3(0.2f, 0, 0), player1, player2);
 
 	gameObjects.push_back(player1);
 	gameObjects.push_back(player2);
 	gameObjects.push_back(ball1);
 
-	bombSpawnManager->SpawnBombs(gameObjects, 5);
+	bombSpawnManager->SpawnBombs(gameObjects, 4);
 }
 
 /* LoadModels */

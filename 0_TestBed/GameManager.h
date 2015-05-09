@@ -89,6 +89,9 @@ private:
 	/* ProcessKeyboard */
 	/* Process user keyboard input */
 	void ProcessKeyboard();
+
+	//The function to randomly generate bombs on the screen
+	void randSpawnBombs();
 };
 
 #endif

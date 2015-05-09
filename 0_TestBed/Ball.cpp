@@ -6,14 +6,13 @@
 #include "Ball.h"
 
 /* Constructor */
-Ball::Ball(String ballName, matrix4 pos, vector3 vel, Player* p1, Player* p2, bool tempBall) :
+Ball::Ball(String ballName, matrix4 pos, vector3 vel, Player* p1, Player* p2) :
 	GameObject(ballName, pos, vel, 0.05f, 0.05f) {
 		type = "Ball";
 
 		player1 = p1;
 		player2 = p2;
 		collidedWith = "";
-		ballIsTemp = tempBall;
 
 		boundingBox->GenerateBoundingBox_Model(type);
 }
@@ -75,37 +74,37 @@ void Ball::SwitchDirection(GameObject& obj)
 bool Ball::InBounds(){
 	// If the player is out of bounds...
 	if(position[3][0] > 18 || position[3][0] < -18) {
-		// So we can hit either paddle regardless of direction
-		collidedWith = "";
+			// So we can hit either paddle regardless of direction
+			collidedWith = "";
 
-		// Find out which player to hurt
-		if(position[3].x < 0) player1->LoseHealth(5);
-		else player2->LoseHealth(5);
+			// Find out which player to hurt
+			if(position[3].x < 0) player1->LoseHealth(5);
+			else player2->LoseHealth(5);
 
-		// Random position to spawn to
-		float randSpawnX = (rand() % 3) - (rand() % 3);
-		float randSpawnY = (rand() % 6) - (rand() % 6);
+			// Random position to spawn to
+			float randSpawnX = (rand() % 3) - (rand() % 3);
+			float randSpawnY = (rand() % 6) - (rand() % 6);
 		
-		// Random float 0 and 360 used to determine direction of ball
-		float randDirection = ((rand() % 45) - (rand() % 45)) * (rand() - rand());
+			// Random float 0 and 360 used to determine direction of ball
+			float randDirection = ((rand() % 45) - (rand() % 45)) * (rand() - rand());
 
-		position[3].x = randSpawnX;
-		position[3].y = randSpawnY;
+			position[3].x = randSpawnX;
+			position[3].y = randSpawnY;
 
-		velocity = vector3(cos(randDirection * PI/180), sin(randDirection * PI/180), 0.0f);
+			velocity = vector3(cos(randDirection * PI/180), sin(randDirection * PI/180), 0.0f);
 		
-		//Added functionality to prevent the ball going up and down. If the x value of the velocity is too small, it will be increased
-		if(velocity.x > -0.0f && velocity.x < 0.35f)
-		{
-			velocity.x = 0.35f;
-		}
-		else if(velocity.x < 0.0f && velocity.x > -0.35f)
-		{
-			velocity.x = -0.35f;
-		}
-		glm::normalize(velocity);
-		velocity *= .2f;
-		return true;		
+			//Added functionality to prevent the ball going up and down. If the x value of the velocity is too small, it will be increased
+			if(velocity.x > -0.0f && velocity.x < 0.4f)
+			{
+				velocity.x = 0.4f;
+			}
+			else if(velocity.x < 0.0f && velocity.x > -0.4f)
+			{
+				velocity.x = -0.4f;
+			}
+			glm::normalize(velocity);
+			velocity *= .2f;
+			return true;
 	}
 
 	//Y Value: Will bounce by reversing y value of the velocity
@@ -115,12 +114,4 @@ bool Ball::InBounds(){
 	}
 
 	return false;
-}
-
-void Ball::removeBall()
-{
-	if((position[3][0] > 18) || (position[3][0] < -18) || (position[3][1] > 10.0f || position[3][1] < -10.0f))
-	{
-		this->~Ball();
-	}
 }
