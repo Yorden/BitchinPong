@@ -20,9 +20,18 @@ Player::Player(String n, matrix4 pos) :
 Player::~Player() {
 }
 
+/* GainHealth */
+void Player::GainHealth(float num) {
+	health += num;
+
+	if(health > totalHealth) {
+		health = totalHealth;
+	}
+}
+
 /* LoseHealth */
-void Player::LoseHealth(float damage) {
-	health -= damage;
+void Player::LoseHealth(float num) {
+	health -= num;
 }
 
 /* Update */

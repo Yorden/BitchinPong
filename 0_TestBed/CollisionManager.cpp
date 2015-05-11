@@ -75,6 +75,7 @@ void CollisionManager::CheckCollisions(std::vector<GameObject*>& gameObjects, Pl
 void CollisionManager::PlayerCollision(Ball& ball, Player& player) {
 	if(ball.boundingBox->CollidesWith(*player.boundingBox) && player.name != ball.GetCollidedWith()) {
 		ball.SwitchDirection(player);
+		player.GainHealth(1);
 	}
 }
 

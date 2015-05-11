@@ -20,9 +20,13 @@ public:
 	/* Destructor */
 	~Player();
 
+	/* GainHealth */
+	/* Increments players health */
+	void GainHealth(float num);
+
 	/* LoseHealth */
 	/* Decrements players health */
-	void LoseHealth(float damage);
+	void LoseHealth(float num);
 
 	/* Update */
 	/* Updates Player */

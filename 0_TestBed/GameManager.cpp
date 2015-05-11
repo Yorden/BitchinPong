@@ -217,7 +217,7 @@ void GameManager::InitGameObjects() {
 	gameObjects.push_back(player2);
 	gameObjects.push_back(ball1);
 
-	bombSpawnManager->SpawnBombs(gameObjects, 4);
+	bombSpawnManager->SpawnBombs(gameObjects, 60);
 }
 
 /* LoadModels */
