@@ -32,7 +32,7 @@ public:
 	void Move() override;
 
 	/* Explode */
-	void Explode(std::vector<GameObject*>& gameObjects, Player& player1, Player& player2);
+	void Explode(std::vector<GameObject*>& gameObjects, Player& player1, Player& player2, Ball& ball);
 
 	/* InBounds */
 	/* Checks to see if the bomb is within the bounds of the screen */

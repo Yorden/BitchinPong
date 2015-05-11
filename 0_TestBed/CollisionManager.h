@@ -45,10 +45,6 @@ public:
 	/* Handles logic for ball-bomb collisions */
 	void BombCollision(std::vector<GameObject*>& gameObjects, Ball& ball, Bomb& bomb, Player& player1, Player& player2);
 
-	/* BallCollisions */
-	/* Handles logic for ball-ball collisions */
-	void BallCollision(Ball& ball1, Ball& ball2);
-
 	/* Draw */
 	/* Draws quad tree, gameobject bounding boxes, and the bounds of the arena */
 	void Draw(std::vector<GameObject*> gameObjects);

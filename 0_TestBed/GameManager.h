@@ -90,8 +90,9 @@ private:
 	/* Process user keyboard input */
 	void ProcessKeyboard();
 
-	//The function to randomly generate bombs on the screen
-	void randSpawnBombs();
+	/* CleanUp */
+	/* Removes null objects from gameobjects array before next loop */
+	void CleanUp();
 };
 
 #endif

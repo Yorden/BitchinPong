@@ -66,12 +66,6 @@ void CollisionManager::CheckCollisions(std::vector<GameObject*>& gameObjects, Pl
 
 					BombCollision(gameObjects, *ball, *bomb, player1, player2);
 				}
-				else if(g1Type == "Ball" && g2Type == "Ball") {
-					Ball* ball1 = (Ball*)g1;
-					Ball* ball2 = (Ball*)g2;
-
-					BallCollision(*ball1, *ball2);
-				}
 			}
 		}
 	}
@@ -84,18 +78,10 @@ void CollisionManager::PlayerCollision(Ball& ball, Player& player) {
 	}
 }
 
-/* BallCollision */
-void CollisionManager::BallCollision(Ball& ball1, Ball& ball2) {
-	if(ball1.boundingBox->CollidesWith(*ball2.boundingBox)) {
-		//ball1.SwitchDirection(ball2);
-		ball2.SwitchDirection(ball1);
-	}
-}
-
 /* BombCollision */
 void CollisionManager::BombCollision(std::vector<GameObject*>& gameObjects, Ball& ball, Bomb& bomb, Player& player1, Player& player2) {	
 	if(ball.boundingBox->CollidesWith(*bomb.boundingBox)) {
-		bomb.Explode(gameObjects, player1, player2);
+		bomb.Explode(gameObjects, player1, player2, ball);
 	}
 }
 

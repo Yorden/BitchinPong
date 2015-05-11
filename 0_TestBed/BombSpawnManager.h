@@ -34,6 +34,10 @@ public:
 	/* SpawnBomb */
 	/* Adds bomb to play field */
 	void SpawnBomb(std::vector<GameObject*>& gameObjects);
+
+	/* RandSpawn */
+	/* Randomly spawns bomb to battlefield */
+	void RandSpawn(std::vector<GameObject*>& gameObjects);
 };
 #endif
 

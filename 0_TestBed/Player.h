@@ -10,10 +10,10 @@
 
 class Player : public GameObject
 {
+public:
 	float health;
 	float totalHealth;
 
-public:
 	/* Constructor */
 	Player(String n, matrix4 pos);
 

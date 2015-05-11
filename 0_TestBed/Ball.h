@@ -17,7 +17,6 @@ class Ball : public GameObject
 	Player* player1;
 	Player* player2;
 	String collidedWith;
-	bool ballIsTemp;
 
 public:
 	/* Constructor */

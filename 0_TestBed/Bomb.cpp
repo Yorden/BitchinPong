@@ -35,13 +35,13 @@ void Bomb::Move() {
 }
 
 /* Explode */
-void Bomb::Explode(std::vector<GameObject*>& gameObjects, Player& player1, Player& player2) {
+void Bomb::Explode(std::vector<GameObject*>& gameObjects, Player& player1, Player& player2, Ball& ball) {
 	float x;
 	float y;
 
-	for(int i = 1; i < 8; i += 2) {
-		x = cosf(2 * PI / 8 * i) * 0.05f;
-		y = sinf(2 * PI / 8 * i) * 0.05f;
+	for(int i = -1; i < 2; i++) {
+		x = ball.GetVelocity().x + cosf(PI / 8 * i) * 0.05f;
+		y = ball.GetVelocity().y + sinf(PI / 8 * i) * 0.05f;
 
 		Ball* b = new Ball("Ball_" + std::to_string(gameObjects.size()), position, vector3(x, y, 0), &player1, &player2);
 

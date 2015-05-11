@@ -15,6 +15,7 @@ public:
 	/* Variables */
 	String name; // Used to identify instance in mesh/collision managers
 	String type; // Used to identify type for collision management
+	bool isActive; // Whether the GameObject is still alive/active/should be drawn
 	matrix4 position; // Gameobject global position
 	vector3 velocity; // Current velocity
 	float acceleration; // Current acceleration
@@ -35,6 +36,10 @@ public:
 	/* GetType */
 	/* Returns string used to identify instance of GameObject in collision manager */
 	String GetType();
+
+	/* IsActive */
+	/* Returns true if the GameObjects is still active and should be drawn to the screen */
+	bool IsActive();
 
 	/* GetPosition */
 	/* Returns position of GameObject in global space */

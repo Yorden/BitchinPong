@@ -63,20 +63,6 @@ void GameManager::ReleaseInstance() {
 	}
 }
 
-//Spawn bombs in a random position
-void GameManager::randSpawnBombs()
-{
-	//A random number that is generated each call
-	float shouldSpawn= rand() % 650;
-
-	//A bomb will only spawn if the random number is equal to the right number
-	if(shouldSpawn == 1)
-	{
-		//If so, it will call the bomb manager's spawn  bomb function
-		bombSpawnManager->SpawnBomb(gameObjects);
-	}
-}
-
 void GameManager::Release() {
 	SafeDelete(window);
 
@@ -107,18 +93,14 @@ void GameManager::Run () {
 void GameManager::Update () {
 	systemSingleton->UpdateTime();
 
+	CleanUp();
+
+	bombSpawnManager->RandSpawn(gameObjects);
+
 	// Update all current GameObjects
-	for(int i = 0; i < gameObjects.size(); i++) 
-	{
+	for(int i = 0; i < gameObjects.size(); i++) {
 		gameObjects[i]->Update();
-
-		//if(gameObjects[i]->GetType() == "Ball")
-		//{
-			//if(gameObjects[i]->rem
-		//}
 	}
-
-	randSpawnBombs();
 
 	// Check for collisions
 	collisionManager->CheckCollisions(gameObjects, *player1, *player2);
@@ -229,7 +211,7 @@ void GameManager::Init( HINSTANCE hInstance, LPWSTR lpCmdLine, int nCmdShow) {
 void GameManager::InitGameObjects() {
 	player1 = new Player("Player1", glm::translate(vector3(-16.0f, 0.0f, 0.0f)));
 	player2 = new Player("Player2", glm::translate(vector3(16.0f, 0.0f, 0.0f)));
-	ball1 = new Ball("Ball1", matrix4(IDENTITY), vector3(0.2f, 0, 0), player1, player2);
+	ball1 = new Ball("MainBall", matrix4(IDENTITY), vector3(0.2f, 0, 0), player1, player2);
 
 	gameObjects.push_back(player1);
 	gameObjects.push_back(player2);
@@ -249,4 +231,18 @@ void GameManager::LoadModels() {
 	meshManagerSingleton->LoadModelUnthreaded("Player.obj", "Player");
 	meshManagerSingleton->LoadModelUnthreaded("Ball.obj", "Ball");
 	meshManagerSingleton->LoadModelUnthreaded("Bomb.obj", "Bomb");
+}
+
+/* CleanUp */
+void GameManager::CleanUp() {
+	int arrSize = gameObjects.size();
+	std::vector<GameObject*> stillActive;
+
+	for(int i = 0; i < arrSize; i++) {
+		if(gameObjects[i]->IsActive()) {
+			stillActive.push_back(gameObjects[i]);
+		}
+	}
+
+	gameObjects = stillActive;
 }

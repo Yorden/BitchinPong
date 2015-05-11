@@ -35,6 +35,11 @@ String GameObject::GetType() {
 	return type;
 }
 
+/* IsActive */
+bool GameObject::IsActive() {
+	return isActive;
+}
+
 /* GetPosition */
 matrix4 GameObject::GetPosition() {
 	return position;

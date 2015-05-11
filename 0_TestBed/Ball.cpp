@@ -74,17 +74,18 @@ void Ball::SwitchDirection(GameObject& obj)
 bool Ball::InBounds(){
 	// If the player is out of bounds...
 	if(position[3][0] > 18 || position[3][0] < -18) {
-			// So we can hit either paddle regardless of direction
-			collidedWith = "";
+		// So we can hit either paddle regardless of direction
+		collidedWith = "";
 
-			// Find out which player to hurt
-			if(position[3].x < 0) player1->LoseHealth(5);
-			else player2->LoseHealth(5);
+		// Find out which player to hurt
+		if(position[3].x < 0) player1->LoseHealth(5);
+		else player2->LoseHealth(5);
 
+		if(name == "MainBall") {
 			// Random position to spawn to
 			float randSpawnX = (rand() % 3) - (rand() % 3);
 			float randSpawnY = (rand() % 6) - (rand() % 6);
-		
+
 			// Random float 0 and 360 used to determine direction of ball
 			float randDirection = ((rand() % 45) - (rand() % 45)) * (rand() - rand());
 
@@ -92,7 +93,7 @@ bool Ball::InBounds(){
 			position[3].y = randSpawnY;
 
 			velocity = vector3(cos(randDirection * PI/180), sin(randDirection * PI/180), 0.0f);
-		
+
 			//Added functionality to prevent the ball going up and down. If the x value of the velocity is too small, it will be increased
 			if(velocity.x > -0.0f && velocity.x < 0.4f)
 			{
@@ -104,7 +105,11 @@ bool Ball::InBounds(){
 			}
 			glm::normalize(velocity);
 			velocity *= .2f;
-			return true;
+		}
+		else {
+			isActive = false;
+		}
+		return true;
 	}
 
 	//Y Value: Will bounce by reversing y value of the velocity

@@ -38,3 +38,12 @@ void BombSpawnManager::SpawnBomb(std::vector<GameObject*>& gameObjects) {
 
 	gameObjects.push_back(b);
 }
+
+/* RandSpawn */
+void BombSpawnManager::RandSpawn(std::vector<GameObject*>& gameObjects) {
+	int randNum = rand() % 300;
+
+	if(randNum == 1) {
+		SpawnBomb(gameObjects);
+	}
+}
