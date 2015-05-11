@@ -11,7 +11,6 @@
 class Player : public GameObject
 {
 public:
-	float health;
 	float totalHealth;
 
 	/* Constructor */
@@ -51,6 +50,8 @@ public:
 	/* DrawHealthBar */
 	/* Draw players health bar to screen */
 	void DrawHealthBar(float xPos);
+public:
+	float health;
 };
 #endif
 

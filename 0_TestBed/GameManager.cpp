@@ -93,20 +93,35 @@ void GameManager::Run () {
 void GameManager::Update () {
 	systemSingleton->UpdateTime();
 
-	CleanUp();
+	//The core of the gameplay will only execute if both players have a health greater than 0
+	if(player1->health > 0 && player2->health > 0)
+	{
+		CleanUp();
 
-	bombSpawnManager->RandSpawn(gameObjects);
+		bombSpawnManager->RandSpawn(gameObjects);
 
-	// Update all current GameObjects
-	for(int i = 0; i < gameObjects.size(); i++) {
-		gameObjects[i]->Update();
-	}
+		// Update all current GameObjects
+		for(int i = 0; i < gameObjects.size(); i++) {
+			gameObjects[i]->Update();
+		}
 
-	// Check for collisions
-	collisionManager->CheckCollisions(gameObjects, *player1, *player2);
+		// Check for collisions
+		collisionManager->CheckCollisions(gameObjects, *player1, *player2);
 	
-	//Update the mesh information
-	meshManagerSingleton->Update();
+		//Update the mesh information
+		meshManagerSingleton->Update();
+	}
+	//Otherwise, the game will stop playinjg (most functions will stop executing) and the camera will move into a different position
+	//If Player 1 is defeated
+	else if(player1->health <= 0)
+	{
+		cameraSingleton->SetPosition(vector3(-50.0f, 0.0f, 20.0f));
+	}
+	//If Player 2 is defeated
+	else if(player2->health <= 0)
+	{
+		cameraSingleton->SetPosition(vector3(50.0f, 0.0f, 20.0f));
+	}
 }
 
 /* Display */
