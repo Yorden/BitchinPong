@@ -41,7 +41,7 @@ void CollisionManager::CheckCollisions(std::vector<GameObject*>& gameObjects, Pl
 
 				String g1Type = g1->GetType();
 				String g2Type = g2->GetType();
-
+				
 				if(g1Type == "Player" && g2Type == "Ball") {
 					Ball* ball = (Ball*)g2;
 					Player* player = (Player*)g1;

@@ -2,7 +2,7 @@
 
 /* Constructor */
 QuadTree::QuadTree() {
-	minNumObjects = 3;
+	minNumObjects = 5;
 	squares = vector<Square*>();
 	groups = vector<vector<GameObject*>>();
 }

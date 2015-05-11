@@ -18,6 +18,8 @@ GameManager::GameManager() {
 	window = nullptr;
 	openGLSingleton = nullptr;
 	lightManagerSingleton = nullptr;
+
+	gameOver = false;
 }
 
 /* Copy Constructor */
@@ -116,11 +118,21 @@ void GameManager::Update () {
 	else if(player1->health <= 0)
 	{
 		cameraSingleton->SetPosition(vector3(-50.0f, 0.0f, 20.0f));
+		window->CreateConsoleWindow();
+		if(!gameOver)
+			printf("Player 2 Wins!!\n");
+
+		gameOver = true;
 	}
 	//If Player 2 is defeated
 	else if(player2->health <= 0)
 	{
 		cameraSingleton->SetPosition(vector3(50.0f, 0.0f, 20.0f));
+		window->CreateConsoleWindow();
+		if(!gameOver)
+			printf("Player 1 Wins!!\n");
+
+		gameOver = true;
 	}
 }
 
@@ -219,7 +231,7 @@ void GameManager::Init( HINSTANCE hInstance, LPWSTR lpCmdLine, int nCmdShow) {
 	//Start the clock
 	systemSingleton->StartClock();
 
-	printf("\n");
+	cout << "hey hey hey";
 }
 
 /* InitGameObjects */
@@ -232,7 +244,7 @@ void GameManager::InitGameObjects() {
 	gameObjects.push_back(player2);
 	gameObjects.push_back(ball1);
 
-	bombSpawnManager->SpawnBombs(gameObjects, 60);
+	bombSpawnManager->SpawnBombs(gameObjects, 2);
 }
 
 /* LoadModels */
