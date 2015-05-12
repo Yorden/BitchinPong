@@ -18,8 +18,6 @@ GameManager::GameManager() {
 	window = nullptr;
 	openGLSingleton = nullptr;
 	lightManagerSingleton = nullptr;
-
-	gameOver = false;
 }
 
 /* Copy Constructor */
@@ -117,22 +115,17 @@ void GameManager::Update () {
 	//If Player 1 is defeated
 	else if(player1->health <= 0)
 	{
-		cameraSingleton->SetPosition(vector3(-50.0f, 0.0f, 20.0f));
-		window->CreateConsoleWindow();
-		if(!gameOver)
-			printf("Player 2 Wins!!\n");
-
-		gameOver = true;
+		cameraSingleton->SetPosition(vector3(50.0f, 0.0f, 20.0f));
+		cameraSingleton->Rotate(0.0f, 0.0f);
+		meshManagerSingleton->AddInstanceToRenderList("Player2Wins");
 	}
 	//If Player 2 is defeated
 	else if(player2->health <= 0)
 	{
-		cameraSingleton->SetPosition(vector3(50.0f, 0.0f, 20.0f));
-		window->CreateConsoleWindow();
-		if(!gameOver)
-			printf("Player 1 Wins!!\n");
-
-		gameOver = true;
+		cameraSingleton->SetPosition(vector3(-50.0f, 0.0f, 20.0f));
+		cameraSingleton->Rotate(0.0f, 0.0f);
+		meshManagerSingleton->AddInstanceToRenderList("Player1Wins");
+		
 	}
 }
 
@@ -244,7 +237,7 @@ void GameManager::InitGameObjects() {
 	gameObjects.push_back(player2);
 	gameObjects.push_back(ball1);
 
-	bombSpawnManager->SpawnBombs(gameObjects, 2);
+	bombSpawnManager->SpawnBombs(gameObjects, 3);
 }
 
 /* LoadModels */
@@ -258,6 +251,8 @@ void GameManager::LoadModels() {
 	meshManagerSingleton->LoadModelUnthreaded("Player.obj", "Player");
 	meshManagerSingleton->LoadModelUnthreaded("Ball.obj", "Ball");
 	meshManagerSingleton->LoadModelUnthreaded("Bomb.obj", "Bomb");
+	meshManagerSingleton->LoadModelUnthreaded("Player1Wins.obj", "Player1Wins", glm::translate(-62.0f, 0.0f, 0.0f));
+	meshManagerSingleton->LoadModelUnthreaded("Player2Wins.obj", "Player2Wins", glm::translate(38.0f, 0.0f, 0.0f));
 }
 
 /* CleanUp */

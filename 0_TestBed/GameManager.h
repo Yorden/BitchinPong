@@ -20,7 +20,6 @@ class GameManager
 {
 	bool m_bFPC;// First Person Camera flag
 	vector4 windowColor;
-	bool gameOver;
 
 	// Game variables
 	std::vector<GameObject*> gameObjects;
